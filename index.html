@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuestas · El Arte de Reinventarte</title>
+<meta name="description" content="Tres propuestas de landing para el retiro El Arte de Reinventarte, Toscana 2026.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#F7F4EF;--lino:#E7DED4;--terracota:#B87B5C;--oliva:#4E4520;
+  --tinta:#2E2317;--dorado:#C89B5A;--gris:#6E655A;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin-inline:auto;padding:clamp(3.5rem,8vw,6rem) clamp(1.5rem,5vw,3rem)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.15;margin:0 0 1rem}
+.kicker{font-size:.66rem;letter-spacing:.36em;text-transform:uppercase;color:var(--terracota);margin:0 0 1.4rem}
+.intro{max-width:60ch;color:var(--gris);margin:0}
+.grid{display:grid;gap:1.5rem;margin-top:clamp(3rem,6vw,4.5rem)}
+@media(min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{
+  display:flex;flex-direction:column;border:1px solid rgba(46,35,23,.14);background:#fff;
+  text-decoration:none;overflow:hidden;transition:transform .4s ease,box-shadow .4s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(46,35,23,.45)}
+.muestra{height:190px;display:grid;place-items:center;position:relative;overflow:hidden}
+.muestra span{font-family:var(--serif);font-size:1.6rem;letter-spacing:.06em}
+.a .muestra{background:linear-gradient(160deg,#F7F4EF 0%,#E7DED4 55%,#D8CBBC 100%);color:var(--terracota)}
+.b .muestra{background:linear-gradient(160deg,#3E3819 0%,#241D12 100%);color:var(--dorado)}
+.c .muestra{background:linear-gradient(160deg,#FDFBF7 0%,#F4EFE7 100%);color:var(--oliva);border-bottom:1px solid rgba(46,35,23,.1)}
+.c .muestra span{border:1px solid #B58E4F;padding:.8rem 1.8rem}
+.card .cuerpo{padding:1.8rem;flex:1;display:flex;flex-direction:column}
+.card .letra{font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--terracota);margin-bottom:.6rem}
+.card h2{font-family:var(--serif);font-weight:400;font-size:1.7rem;margin:0 0 .8rem;line-height:1.2}
+.card p{font-size:.9rem;color:var(--gris);margin:0 0 1.5rem;flex:1}
+.card .ver{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--oliva);border-bottom:1px solid var(--terracota);padding-bottom:3px;align-self:flex-start}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.tags i{font-style:normal;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);border:1px solid rgba(46,35,23,.16);padding:.3rem .6rem}
+footer{border-top:1px solid rgba(46,35,23,.12);margin-top:2rem}
+footer .wrap{padding-block:2.5rem;font-size:.75rem;color:var(--gris)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">El Arte de Reinventarte · Toscana 2026</p>
+  <h1>Tres propuestas de landing</h1>
+  <p class="intro">Mismo contenido, tres conceptos distintos de dirección de arte y estructura narrativa. Todas comparten la paleta de la marca y son responsive. Elige una y la desarrollamos a fondo.</p>
+
+  <div class="grid">
+    <a class="card a" href="propuesta-a/">
+      <div class="muestra"><span>Editorial</span></div>
+      <div class="cuerpo">
+        <p class="letra">Propuesta A</p>
+        <h2>Editorial Toscana</h2>
+        <div class="tags"><i>Crema y terracota</i><i>Scroll cinematográfico</i><i>Completa</i></div>
+        <p>Revista de viaje de lujo silencioso. Secciones amplias, fotografía grande, alternancia de fondos claros y oliva. La opción más completa y la más segura comercialmente.</p>
+        <span class="ver">Ver propuesta</span>
+      </div>
+    </a>
+
+    <a class="card b" href="propuesta-b/">
+      <div class="muestra"><span>La Carta</span></div>
+      <div class="cuerpo">
+        <p class="letra">Propuesta B</p>
+        <h2>La Carta</h2>
+        <div class="tags"><i>Oscura y cálida</i><i>Primera persona</i><i>Íntima</i></div>
+        <p>Una carta de Egda, no una página de venta. Fondo noche, tipografía grande, texto en columna estrecha. Máxima carga emocional y mínima estructura comercial.</p>
+        <span class="ver">Ver propuesta</span>
+      </div>
+    </a>
+
+    <a class="card c" href="propuesta-c/">
+      <div class="muestra"><span>Invitación</span></div>
+      <div class="cuerpo">
+        <p class="letra">Propuesta C</p>
+        <h2>La Invitación</h2>
+        <div class="tags"><i>Hueso y dorado</i><i>Ficha fija</i><i>Orientada a decisión</i></div>
+        <p>Invitación de evento privado. Marco dorado, agenda hora a hora y ficha de reserva siempre visible al lado. La que más rápido responde las dudas de compra.</p>
+        <span class="ver">Ver propuesta</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">Documento de trabajo · Las fotografías y los datos comerciales están pendientes de sustituir.</div>
+</footer>
+</body>
+</html>

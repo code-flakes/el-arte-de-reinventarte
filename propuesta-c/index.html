@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta C · La Invitación — El Arte de Reinventarte</title>
+<meta name="description" content="Retiro privado en la Toscana para doce mujeres. 2–4 de octubre de 2026. Programa, villa e inversión.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hueso:#FDFBF7;
+  --hueso-2:#F4EFE7;
+  --tinta:#221C14;
+  --gris:#6E655A;
+  --dorado:#B58E4F;
+  --dorado-cl:#E3D4B4;
+  --oliva:#4E4520;
+  --linea:rgba(34,28,20,.14);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Jost',-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--hueso);color:var(--tinta);
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+p{margin:0 0 1.1em}
+
+h1,h2,h3{font-family:var(--serif);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(2.4rem,5.5vw,4.2rem)}
+h2{font-size:clamp(1.7rem,3.2vw,2.5rem)}
+h3{font-size:1.25rem;font-weight:400}
+
+.kicker{
+  font-family:var(--sans);font-size:.66rem;font-weight:400;letter-spacing:.38em;
+  text-transform:uppercase;color:var(--dorado);margin:0 0 1.2rem;
+}
+.regla{display:flex;align-items:center;gap:1rem;margin:1.8rem 0}
+.regla::before,.regla::after{content:'';flex:1;height:1px;background:var(--linea)}
+.regla span{font-family:var(--sans);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dorado)}
+.regla.izq::before{display:none}
+
+.wrap{max-width:1240px;margin-inline:auto;padding-inline:clamp(1.5rem,4vw,3rem)}
+.centro{text-align:center}
+
+/* ---------- barra superior ---------- */
+.barra{
+  position:sticky;top:0;z-index:40;background:rgba(253,251,247,.95);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--linea);
+}
+.barra .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:64px}
+.barra .marca{font-family:var(--serif);font-size:.88rem;letter-spacing:.24em;text-transform:uppercase;text-decoration:none}
+.barra nav{display:none;gap:2rem}
+@media(min-width:900px){.barra nav{display:flex}}
+.barra nav a{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--gris);transition:color .3s}
+.barra nav a:hover{color:var(--dorado)}
+.barra .cta{
+  font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;
+  padding:.7rem 1.4rem;background:var(--oliva);color:var(--hueso);white-space:nowrap;
+}
+
+/* ---------- portada tipo invitación ---------- */
+.portada{position:relative;min-height:92svh;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center}
+.portada .media{position:absolute;inset:0;z-index:-2;margin:0;background:var(--hueso-2)}
+.portada .media img{width:100%;height:100%;object-fit:cover}
+.portada::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(253,251,247,.72),rgba(253,251,247,.55) 45%,rgba(253,251,247,.9))}
+.marco{
+  border:1px solid var(--dorado);padding:clamp(2.5rem,6vw,4.5rem) clamp(1.5rem,6vw,5rem);
+  margin:clamp(1.5rem,5vw,3rem);background:rgba(253,251,247,.55);backdrop-filter:blur(2px);
+  max-width:760px;
+}
+.marco h1{margin:.8rem 0}
+.marco .lugar{font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.4rem);font-style:italic;color:var(--gris)}
+.fechas{
+  display:flex;justify-content:center;align-items:stretch;gap:0;margin:2.4rem 0;
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+}
+.fechas div{padding:1.1rem 1.4rem;flex:1;max-width:150px}
+.fechas div+div{border-left:1px solid var(--linea)}
+.fechas .n{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);line-height:1;display:block}
+.fechas .l{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gris);margin-top:.4rem;display:block}
+
+.btn{
+  display:inline-block;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.24em;
+  text-transform:uppercase;text-decoration:none;padding:1.15rem 2.8rem;
+  background:var(--oliva);color:var(--hueso);border:1px solid var(--oliva);
+  transition:background .35s ease,color .35s ease;
+}
+.btn:hover{background:transparent;color:var(--oliva)}
+.btn-linea{background:transparent;color:var(--oliva)}
+.btn-linea:hover{background:var(--oliva);color:var(--hueso)}
+
+/* ---------- cuerpo de dos columnas con ficha fija ---------- */
+.doble{display:grid;gap:3rem;padding-block:clamp(3.5rem,8vw,6rem)}
+@media(min-width:1000px){.doble{grid-template-columns:1fr 360px;gap:5rem;align-items:start}}
+.ficha{
+  border:1px solid var(--linea);background:var(--hueso-2);padding:2rem;
+}
+@media(min-width:1000px){.ficha{position:sticky;top:96px}}
+.ficha h3{margin-bottom:.4rem}
+.ficha .precio{font-family:var(--serif);font-size:2.6rem;line-height:1;display:block;margin:.6rem 0 .2rem}
+.ficha .precio-nota{font-size:.75rem;color:var(--gris);margin-bottom:1.5rem}
+.ficha dl{margin:0 0 1.8rem;font-size:.82rem}
+.ficha dl div{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--linea)}
+.ficha dt{color:var(--gris);text-transform:uppercase;font-size:.64rem;letter-spacing:.16em}
+.ficha dd{margin:0;text-align:right;font-family:var(--serif);font-size:1rem}
+.ficha .btn{display:block;text-align:center}
+.ficha .plazas{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dorado);text-align:center;margin-top:1rem}
+
+/* ---------- bloques de contenido ---------- */
+.bloque+.bloque{margin-top:clamp(3rem,6vw,4.5rem)}
+.bloque > h2{margin-bottom:1.5rem}
+
+.pilares{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);margin-top:2rem}
+@media(min-width:700px){.pilares{grid-template-columns:repeat(3,1fr)}}
+.pilares > div{background:var(--hueso);padding:2rem 1.6rem}
+.pilares h3{color:var(--dorado);margin-bottom:.4rem;font-family:var(--serif);font-size:1.4rem}
+.pilares p{font-size:.88rem;color:var(--gris);margin:0}
+
+/* agenda tipo programa impreso */
+.agenda{margin-top:2rem;border-top:1px solid var(--linea)}
+.agenda details{border-bottom:1px solid var(--linea)}
+.agenda summary{
+  cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:1.2rem;padding:1.5rem 0;
+}
+.agenda summary::-webkit-details-marker{display:none}
+.agenda .d{font-family:var(--serif);font-size:1.6rem;color:var(--dorado);min-width:3ch}
+.agenda .t{font-family:var(--serif);font-size:1.35rem;flex:1}
+.agenda .mas{color:var(--dorado);font-size:1.2rem}
+.agenda details[open] .mas{transform:rotate(45deg);display:inline-block}
+.agenda ol{list-style:none;padding:0 0 1.8rem;margin:0}
+.agenda ol li{display:flex;gap:1.5rem;padding:.5rem 0;font-size:.9rem}
+.agenda ol li span:first-child{color:var(--dorado);font-size:.7rem;letter-spacing:.14em;min-width:5.5rem;padding-top:.35rem}
+
+/* galería en tira */
+.tira{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:2rem;background:var(--linea);border:1px solid var(--linea)}
+@media(min-width:700px){.tira{grid-template-columns:repeat(3,1fr)}}
+.tira .im{aspect-ratio:1;margin:0;position:relative;overflow:hidden;background:var(--hueso-2)}
+.tira .im img{width:100%;height:100%;object-fit:cover}
+
+.im.missing img{display:none}
+.im.missing,.media.missing{background:linear-gradient(150deg,#E8DCC6 0%,#D5B993 55%,#A88C63 100%)}
+.im.missing::after,.media.missing::after{
+  content:attr(data-file);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,252,246,.92);
+  background:rgba(34,28,20,.22);text-align:center;padding:.8rem;
+}
+.media.missing img{display:none}
+
+/* tabla incluye */
+.tabla{display:grid;gap:0;margin-top:2rem;border:1px solid var(--linea)}
+@media(min-width:700px){.tabla{grid-template-columns:1fr 1fr}}
+.tabla > div{padding:2rem}
+.tabla > div + div{border-top:1px solid var(--linea)}
+@media(min-width:700px){.tabla > div + div{border-top:none;border-left:1px solid var(--linea)}}
+.tabla h3{margin-bottom:1rem;font-size:1.1rem}
+.tabla ul{list-style:none;padding:0;margin:0;font-size:.9rem}
+.tabla li{padding:.5rem 0 .5rem 1.4rem;position:relative}
+.tabla li::before{content:'·';position:absolute;left:.3rem;color:var(--dorado)}
+.tabla .no li{color:var(--gris)}
+
+/* anfitrionas en fila */
+.equipo{display:grid;gap:2.5rem;margin-top:2rem}
+@media(min-width:760px){.equipo{grid-template-columns:repeat(3,1fr)}}
+.equipo .im{aspect-ratio:1;border-radius:50%;overflow:hidden;margin:0 auto 1.2rem;max-width:180px;position:relative;background:var(--hueso-2)}
+.equipo h3{font-size:1.3rem;margin-bottom:.2rem}
+.equipo .rol{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dorado);margin-bottom:.8rem}
+.equipo p{font-size:.86rem;color:var(--gris)}
+.equipo a{font-size:.72rem;letter-spacing:.1em;color:var(--dorado);text-decoration:none;border-bottom:1px solid currentColor}
+
+/* cita */
+.cita{
+  background:var(--oliva);color:var(--hueso);text-align:center;
+  padding:clamp(4rem,9vw,7rem) 0;margin-top:clamp(3.5rem,7vw,5.5rem);
+}
+.cita p{font-family:var(--serif);font-size:clamp(1.5rem,3.4vw,2.4rem);font-style:italic;line-height:1.45;max-width:22ch;margin:0 auto 2.2rem}
+.cita .btn{background:var(--dorado-cl);border-color:var(--dorado-cl);color:var(--oliva)}
+.cita .btn:hover{background:transparent;color:var(--dorado-cl)}
+
+footer{border-top:1px solid var(--linea);padding:3.5rem 0;text-align:center;font-size:.78rem;color:var(--gris)}
+footer .marca{font-family:var(--serif);font-size:1rem;letter-spacing:.26em;text-transform:uppercase;color:var(--tinta);display:block;margin-bottom:1.2rem}
+footer a{color:var(--dorado);text-decoration:none}
+footer .legal{margin-top:1.8rem;font-size:.68rem;opacity:.7}
+
+.cta-movil{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;padding:.8rem 1rem;
+  background:rgba(253,251,247,.97);border-top:1px solid var(--linea);
+  transform:translateY(110%);transition:transform .4s ease;
+}
+.cta-movil.on{transform:none}
+.cta-movil .btn{display:block;text-align:center}
+@media(min-width:1000px){.cta-movil{display:none}}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="barra">
+  <div class="wrap">
+    <a class="marca" href="#top">El Arte de Reinventarte</a>
+    <nav>
+      <a href="#programa">Programa</a>
+      <a href="#villa">La villa</a>
+      <a href="#equipo">Anfitrionas</a>
+      <a href="#inversion">Inversión</a>
+    </nav>
+    <a class="cta" href="#inversion">Reservar</a>
+  </div>
+</div>
+
+<!-- ===== PORTADA ===== -->
+<header class="portada" id="top">
+  <figure class="media" data-file="assets/hero-villa.jpg">
+    <img src="../assets/hero-villa.jpg" alt="Villa toscana">
+  </figure>
+  <div class="marco">
+    <p class="kicker">Retiro privado · Solo 12 mujeres</p>
+    <h1>El Arte de Reinventarte</h1>
+    <p class="lugar">Villa privada · Arezzo, Toscana</p>
+    <div class="fechas">
+      <div><span class="n">02</span><span class="l">Octubre</span></div>
+      <div><span class="n">03</span><span class="l">Octubre</span></div>
+      <div><span class="n">04</span><span class="l">Octubre</span></div>
+    </div>
+    <a class="btn" href="#inversion">Reservar mi lugar</a>
+  </div>
+</header>
+
+<!-- ===== CUERPO + FICHA ===== -->
+<div class="wrap">
+  <div class="doble">
+
+    <!-- columna de contenido -->
+    <div>
+
+      <div class="bloque rv">
+        <p class="kicker">La propuesta</p>
+        <h2>Tres días para detenerte,<br>escucharte y volver a ti</h2>
+        <p>No es un viaje ni un taller. Es un espacio cerrado, con doce mujeres, en una villa privada de la campiña toscana, diseñado para que salgas con dirección y no solo con emoción.</p>
+        <div class="pilares">
+          <div><h3>Detenerte</h3><p>Bajar el ruido.</p></div>
+          <div><h3>Entenderte</h3><p>Ver lo que has estado evitando.</p></div>
+          <div><h3>Decidir</h3><p>Tomar decisiones reales.</p></div>
+        </div>
+      </div>
+
+      <!-- PENDIENTE: itinerario real, horas y actividades -->
+      <div class="bloque rv" id="programa">
+        <div class="regla izq"><span>Programa</span></div>
+        <h2>Los tres días, hora a hora</h2>
+        <div class="agenda">
+          <details open>
+            <summary><span class="d">01</span><span class="t">Llegar y soltar</span><span class="mas">+</span></summary>
+            <ol>
+              <li><span>PENDIENTE</span><span>Llegada y bienvenida en la villa</span></li>
+              <li><span>PENDIENTE</span><span>Apertura del círculo</span></li>
+              <li><span>PENDIENTE</span><span>Cena larga en el jardín</span></li>
+            </ol>
+          </details>
+          <details>
+            <summary><span class="d">02</span><span class="t">Mirar de frente</span><span class="mas">+</span></summary>
+            <ol>
+              <li><span>PENDIENTE</span><span>Sesión de la mañana</span></li>
+              <li><span>PENDIENTE</span><span>Trabajo individual</span></li>
+              <li><span>PENDIENTE</span><span>Círculo al atardecer</span></li>
+            </ol>
+          </details>
+          <details>
+            <summary><span class="d">03</span><span class="t">Decidir y volver</span><span class="mas">+</span></summary>
+            <ol>
+              <li><span>PENDIENTE</span><span>Sesión de cierre</span></li>
+              <li><span>PENDIENTE</span><span>Plan de regreso</span></li>
+              <li><span>PENDIENTE</span><span>Despedida</span></li>
+            </ol>
+          </details>
+        </div>
+      </div>
+
+      <div class="bloque rv" id="villa">
+        <div class="regla izq"><span>El lugar</span></div>
+        <h2>Una villa privada<br>en la campiña de Arezzo</h2>
+        <p>Piedra, cipreses, una mesa larga y el silencio de la Toscana al atardecer. Durante tres días la villa es solo nuestra.</p>
+        <div class="tira">
+          <figure class="im" data-file="assets/villa-1.jpg"><img src="../assets/villa-1.jpg" alt="Exterior"></figure>
+          <figure class="im" data-file="assets/villa-2.jpg"><img src="../assets/villa-2.jpg" alt="Jardín"></figure>
+          <figure class="im" data-file="assets/villa-3.jpg"><img src="../assets/villa-3.jpg" alt="Habitación"></figure>
+          <figure class="im" data-file="assets/villa-4.jpg"><img src="../assets/villa-4.jpg" alt="Mesa"></figure>
+          <figure class="im" data-file="assets/villa-5.jpg"><img src="../assets/villa-5.jpg" alt="Paisaje"></figure>
+          <figure class="im" data-file="assets/dia-2.jpg"><img src="../assets/dia-2.jpg" alt="Círculo"></figure>
+        </div>
+      </div>
+
+      <!-- PENDIENTE: confirmar inclusiones -->
+      <div class="bloque rv">
+        <div class="regla izq"><span>Qué incluye</span></div>
+        <div class="tabla">
+          <div>
+            <h3>Incluido</h3>
+            <ul>
+              <li>Alojamiento 2 noches en la villa</li>
+              <li>Todas las comidas y cenas</li>
+              <li>Programa completo</li>
+              <li>Traslados desde el punto de encuentro</li>
+              <li>Materiales del retiro</li>
+            </ul>
+          </div>
+          <div>
+            <h3>No incluido</h3>
+            <ul class="no">
+              <li>Vuelos hasta Italia</li>
+              <li>Seguro de viaje</li>
+              <li>Gastos personales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque rv" id="equipo">
+        <div class="regla izq"><span>Anfitrionas</span></div>
+        <h2>Quién te acompaña</h2>
+        <div class="equipo">
+          <div>
+            <figure class="im" data-file="assets/egda.jpg"><img src="../assets/egda.jpg" alt="Egda Elena"></figure>
+            <h3>Egda Elena</h3>
+            <p class="rol">Fundadora</p>
+            <p>Latina con hogar en Italia. Se ha reinventado en distintos países y etapas.</p>
+            <a href="https://www.instagram.com/egdaelena/" target="_blank" rel="noopener">@egdaelena</a>
+          </div>
+          <div>
+            <figure class="im" data-file="assets/fabiana.jpg"><img src="../assets/fabiana.jpg" alt="Fabiana Constanza"></figure>
+            <h3>Fabiana Constanza</h3>
+            <p class="rol">PENDIENTE — rol</p>
+            <p>PENDIENTE — bio corta.</p>
+            <a href="https://www.instagram.com/fabianaconstanza_/" target="_blank" rel="noopener">@fabianaconstanza_</a>
+          </div>
+          <div>
+            <figure class="im" data-file="assets/rosa.jpg"><img src="../assets/rosa.jpg" alt="Rosa Rodrigues"></figure>
+            <h3>Rosa Rodrigues</h3>
+            <p class="rol">PENDIENTE — rol</p>
+            <p>PENDIENTE — bio corta.</p>
+            <a href="https://www.instagram.com/rosarodrigues11_11/" target="_blank" rel="noopener">@rosarodrigues11_11</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque rv">
+        <div class="regla izq"><span>Preguntas</span></div>
+        <div class="agenda">
+          <details><summary><span class="t">Voy sola, ¿es incómodo?</span><span class="mas">+</span></summary><ol><li><span></span><span>La mayoría viene sola. Es justamente lo que hace que el grupo funcione.</span></li></ol></details>
+          <details><summary><span class="t">¿Necesito visado para Italia?</span><span class="mas">+</span></summary><ol><li><span></span><span>PENDIENTE — respuesta según nacionalidades frecuentes.</span></li></ol></details>
+          <details><summary><span class="t">¿Cómo llego a la villa?</span><span class="mas">+</span></summary><ol><li><span></span><span>PENDIENTE — aeropuerto y punto de encuentro.</span></li></ol></details>
+          <details><summary><span class="t">¿Y si tengo que cancelar?</span><span class="mas">+</span></summary><ol><li><span></span><span>PENDIENTE — política de cancelación.</span></li></ol></details>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ficha lateral -->
+    <!-- PENDIENTE: precio y plan de pagos reales -->
+    <aside class="ficha rv" id="inversion">
+      <p class="kicker" style="margin-bottom:.4rem">La inversión</p>
+      <h3>Retiro completo</h3>
+      <span class="precio">PENDIENTE €</span>
+      <p class="precio-nota">Habitación compartida · Todo incluido salvo vuelos</p>
+      <dl>
+        <div><dt>Fechas</dt><dd>2 – 4 Oct 2026</dd></div>
+        <div><dt>Duración</dt><dd>3 días · 2 noches</dd></div>
+        <div><dt>Lugar</dt><dd>Arezzo, Toscana</dd></div>
+        <div><dt>Plazas</dt><dd>12 mujeres</dd></div>
+        <div><dt>Idioma</dt><dd>Español</dd></div>
+        <div><dt>Depósito</dt><dd>PENDIENTE €</dd></div>
+      </dl>
+      <a class="btn" href="#" data-cta="reservar">Reservar mi lugar</a>
+      <p class="plazas">Quedan 12 plazas</p>
+    </aside>
+
+  </div>
+</div>
+
+<section class="cita">
+  <div class="wrap">
+    <p>Cuando por fin te eliges, el universo entiende el idioma.</p>
+    <a class="btn" href="#inversion">Reservar mi lugar</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="marca">El Arte de Reinventarte</span>
+    <p>
+      <a href="https://www.instagram.com/elartereinventarte/" target="_blank" rel="noopener">@elartereinventarte</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.instagram.com/egdaelena/" target="_blank" rel="noopener">@egdaelena</a>
+    </p>
+    <p class="legal">© 2026 El Arte de Reinventarte. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<div class="cta-movil" id="ctaMovil">
+  <a class="btn" href="#inversion">Reservar · 2–4 Oct 2026</a>
+</div>
+
+<script>
+document.querySelectorAll('.im img, .media img').forEach(function(img){
+  var mark = function(){ img.closest('.im, .media').classList.add('missing'); };
+  img.addEventListener('error', mark);
+  if (img.complete && img.naturalWidth === 0) mark();
+});
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+var ctaM = document.getElementById('ctaMovil');
+window.addEventListener('scroll', function(){
+  ctaM.classList.toggle('on', window.scrollY > window.innerHeight * 0.9);
+}, { passive: true });
+</script>
+</body>
+</html>

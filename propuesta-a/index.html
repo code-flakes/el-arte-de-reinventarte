@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta A · Editorial Toscana — El Arte de Reinventarte</title>
+<meta name="description" content="Retiro íntimo para mujeres en transición. Tres días en una villa privada de la Toscana para detenerte, entenderte y decidir. 2–4 de octubre de 2026.">
+<meta property="og:title" content="El Arte de Reinventarte · Retiro en la Toscana">
+<meta property="og:description" content="Tres días en una villa privada de la Toscana para volver a ti. 2–4 de octubre de 2026.">
+<meta property="og:image" content="../assets/og.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#F7F4EF;
+  --lino:#E7DED4;
+  --arena:#D8CBBC;
+  --terracota:#B87B5C;
+  --terracota-osc:#9A6146;
+  --oliva:#4E4520;
+  --oliva-claro:#6B6134;
+  --tinta:#2E2317;
+  --dorado:#C89B5A;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --script:'Parisienne',cursive;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--crema);color:var(--tinta);
+  font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* ---------- tipografía ---------- */
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(2.6rem,7vw,5.4rem)}
+h2{font-size:clamp(2rem,4.6vw,3.4rem)}
+h3{font-size:clamp(1.35rem,2.4vw,1.9rem)}
+.script{font-family:var(--script);color:var(--terracota);font-size:1.35em;line-height:1}
+.eyebrow{
+  font-family:var(--sans);font-size:.72rem;font-weight:400;
+  letter-spacing:.34em;text-transform:uppercase;color:var(--terracota);
+  margin:0 0 1.4rem;
+}
+.lead{font-family:var(--serif);font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:1.6;font-weight:300}
+p{margin:0 0 1.15em}
+.center{text-align:center}
+.narrow{max-width:62ch;margin-inline:auto}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(1.5rem,5vw,3rem)}
+section{padding:clamp(5rem,11vw,9rem) 0;position:relative}
+
+/* ---------- fondos ---------- */
+.bg-lino{background:var(--lino)}
+.bg-oliva{background:var(--oliva);color:#EFE8DC}
+.bg-oliva h2,.bg-oliva h3{color:#F3ECDF}
+.bg-oliva .eyebrow{color:var(--dorado)}
+.bg-oliva .script{color:var(--dorado)}
+
+/* ---------- botones ---------- */
+.btn{
+  display:inline-block;font-family:var(--sans);font-size:.78rem;font-weight:400;
+  letter-spacing:.22em;text-transform:uppercase;text-decoration:none;
+  padding:1.15rem 2.6rem;border:1px solid var(--terracota);
+  background:var(--terracota);color:#FFF8F0;
+  transition:background .35s ease,color .35s ease,border-color .35s ease,transform .35s ease;
+}
+.btn:hover{background:var(--terracota-osc);border-color:var(--terracota-osc);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--terracota)}
+.btn-ghost:hover{background:var(--terracota);color:#FFF8F0}
+.bg-oliva .btn-ghost{color:var(--dorado);border-color:var(--dorado)}
+.bg-oliva .btn-ghost:hover{background:var(--dorado);color:var(--oliva)}
+
+/* ---------- placeholders de imagen ---------- */
+.img{margin:0;position:relative;overflow:hidden;background:var(--arena)}
+.img img{width:100%;height:100%;object-fit:cover}
+.img.missing{
+  background:linear-gradient(150deg,#D9C7A9 0%,#C79E74 45%,#8C7448 100%);
+  min-height:220px;
+}
+.img.missing img{display:none}
+.img.missing::after{
+  content:attr(data-file);position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;
+  font-family:var(--sans);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,250,240,.9);background:rgba(46,35,23,.28);
+}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;
+  justify-content:space-between;gap:1rem;
+  padding:1.1rem clamp(1.5rem,5vw,3rem);
+  transition:background .4s ease,box-shadow .4s ease,padding .4s ease;
+}
+.nav.solid{background:rgba(247,244,239,.94);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(46,35,23,.09);padding-block:.85rem}
+.nav .mark{font-family:var(--serif);font-size:.9rem;letter-spacing:.26em;text-transform:uppercase;color:#F3ECDF;text-decoration:none;transition:color .4s}
+.nav.solid .mark{color:var(--tinta)}
+.nav .nav-cta{
+  font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;padding:.72rem 1.5rem;border:1px solid rgba(243,236,223,.7);color:#F3ECDF;
+  transition:all .4s ease;
+}
+.nav.solid .nav-cta{border-color:var(--terracota);background:var(--terracota);color:#FFF8F0}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:grid;place-items:center;padding:0;overflow:hidden;isolation:isolate}
+.hero .img{position:absolute;inset:0;z-index:-2}
+.hero::after{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(46,35,23,.55) 0%,rgba(46,35,23,.25) 40%,rgba(46,35,23,.72) 100%);
+}
+.hero-inner{text-align:center;color:#FBF6EE;padding:8rem clamp(1.5rem,5vw,3rem) 5rem;max-width:900px}
+.hero .eyebrow{color:#E9D9BF}
+.hero h1{text-shadow:0 2px 30px rgba(0,0,0,.3)}
+.hero .fecha{
+  font-family:var(--serif);font-size:clamp(1.05rem,2vw,1.4rem);font-style:italic;
+  margin:1.6rem 0 2.4rem;color:#F1E6D6;
+}
+.hero .rule{width:1px;height:60px;background:rgba(251,246,238,.5);margin:0 auto 2rem}
+.hero .escasez{
+  display:block;margin-top:1.6rem;font-size:.74rem;letter-spacing:.2em;
+  text-transform:uppercase;color:#E9D9BF;opacity:.9;
+}
+
+/* ---------- espejo ---------- */
+.espejo p{
+  font-family:var(--serif);font-size:clamp(1.5rem,3.2vw,2.35rem);
+  line-height:1.45;font-weight:300;margin:0 0 1.8rem;
+}
+.espejo p:last-child{margin-bottom:0;color:var(--terracota);font-style:italic}
+
+/* ---------- pilares ---------- */
+.pilares{display:grid;gap:3rem;margin-top:4rem}
+@media(min-width:780px){.pilares{grid-template-columns:repeat(3,1fr);gap:0}
+  .pilar+.pilar{border-left:1px solid rgba(46,35,23,.16)}
+  .pilar{padding-inline:2.5rem}}
+.pilar{text-align:center}
+.pilar .num{font-family:var(--serif);font-size:.9rem;letter-spacing:.3em;color:var(--terracota);display:block;margin-bottom:1rem}
+.pilar h3{color:var(--terracota);margin-bottom:.6rem}
+.pilar p{font-family:var(--serif);font-size:1.1rem;margin:0}
+
+/* ---------- programa ---------- */
+.dia{display:grid;gap:2rem;align-items:center;padding-block:clamp(2.5rem,5vw,4rem)}
+.dia+.dia{border-top:1px solid rgba(239,232,220,.18)}
+@media(min-width:860px){
+  .dia{grid-template-columns:1fr 1fr;gap:4.5rem}
+  .dia:nth-child(even) .dia-txt{order:2}
+}
+.dia .img{aspect-ratio:4/5}
+.dia .num{
+  font-family:var(--serif);font-size:clamp(3rem,7vw,5rem);line-height:1;
+  color:var(--dorado);opacity:.55;display:block;margin-bottom:.4rem;
+}
+.dia h3{margin-bottom:1rem}
+.dia ul{list-style:none;padding:0;margin:1.5rem 0 0}
+.dia li{padding:.55rem 0 .55rem 1.6rem;position:relative;border-bottom:1px solid rgba(239,232,220,.14);font-size:.95rem}
+.dia li::before{content:'';position:absolute;left:0;top:1.15rem;width:8px;height:1px;background:var(--dorado)}
+
+/* ---------- galería ---------- */
+.galeria{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-top:3.5rem}
+@media(min-width:780px){.galeria{grid-template-columns:repeat(4,1fr)}}
+.galeria .img{aspect-ratio:3/4}
+.galeria .img:first-child{grid-column:span 2;aspect-ratio:3/2}
+@media(min-width:780px){.galeria .img:first-child{grid-row:span 2;aspect-ratio:auto}}
+
+/* ---------- incluye ---------- */
+.dos-col{display:grid;gap:3rem;margin-top:3.5rem}
+@media(min-width:780px){.dos-col{grid-template-columns:1fr 1fr;gap:5rem}}
+.lista{list-style:none;padding:0;margin:1.5rem 0 0}
+.lista li{padding:.7rem 0;border-bottom:1px solid rgba(46,35,23,.12);font-size:.98rem}
+.bg-oliva .lista li{border-color:rgba(239,232,220,.16)}
+.lista.no li{opacity:.65}
+
+/* ---------- anfitrionas ---------- */
+.anfitrionas{display:grid;gap:3rem;margin-top:4rem}
+@media(min-width:780px){.anfitrionas{grid-template-columns:repeat(3,1fr)}}
+.anfitriona{text-align:center}
+.anfitriona .img{aspect-ratio:3/4;margin-bottom:1.5rem}
+.anfitriona h3{margin-bottom:.3rem}
+.anfitriona .rol{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--terracota);margin-bottom:1rem}
+.anfitriona p{font-size:.95rem}
+.anfitriona .ig{font-size:.78rem;letter-spacing:.12em;text-decoration:none;color:var(--terracota);border-bottom:1px solid currentColor;padding-bottom:2px}
+
+/* ---------- testimonios ---------- */
+.testimonios{display:grid;gap:2rem;margin-top:3.5rem}
+@media(min-width:780px){.testimonios{grid-template-columns:repeat(3,1fr)}}
+.testimonio{background:var(--crema);padding:2.5rem 2rem;text-align:center}
+.bg-oliva .testimonio{background:rgba(255,255,255,.06)}
+.testimonio q{font-family:var(--serif);font-size:1.15rem;font-style:italic;line-height:1.6;display:block;margin-bottom:1.2rem;quotes:'“' '”'}
+.testimonio cite{font-style:normal;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracota)}
+
+/* ---------- para quién ---------- */
+.para-quien{display:grid;gap:3rem;margin-top:3.5rem}
+@media(min-width:780px){.para-quien{grid-template-columns:1fr 1fr;gap:4rem}}
+.para-quien h3{font-size:1.4rem;margin-bottom:1rem}
+
+/* ---------- inversión ---------- */
+.precio-card{
+  max-width:640px;margin:3.5rem auto 0;padding:clamp(2.5rem,5vw,4rem);
+  background:var(--crema);text-align:center;border:1px solid rgba(46,35,23,.1);
+}
+.precio{font-family:var(--serif);font-size:clamp(2.8rem,6vw,4.2rem);line-height:1;color:var(--tinta);display:block;margin:.6rem 0}
+.precio-nota{font-size:.85rem;opacity:.75;margin-bottom:2rem}
+.pagos{list-style:none;padding:0;margin:0 0 2.5rem;text-align:left;max-width:380px;margin-inline:auto}
+.pagos li{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid rgba(46,35,23,.12);font-size:.92rem}
+
+/* ---------- faq ---------- */
+.faq{max-width:760px;margin:3.5rem auto 0}
+.faq details{border-bottom:1px solid rgba(46,35,23,.14)}
+.faq summary{
+  cursor:pointer;list-style:none;padding:1.4rem 2.5rem 1.4rem 0;position:relative;
+  font-family:var(--serif);font-size:1.2rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';position:absolute;right:.4rem;top:1.25rem;font-size:1.4rem;color:var(--terracota);transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 2rem 1.6rem 0;margin:0;font-size:.98rem;opacity:.88}
+
+/* ---------- cierre ---------- */
+.cierre{min-height:80svh;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center}
+.cierre .img{position:absolute;inset:0;z-index:-2}
+.cierre::after{content:'';position:absolute;inset:0;z-index:-1;background:rgba(46,35,23,.6)}
+.cierre-inner{color:#FBF6EE;padding:5rem clamp(1.5rem,5vw,3rem);max-width:820px}
+.cierre .frase{font-family:var(--serif);font-size:clamp(1.8rem,4.5vw,3.2rem);font-style:italic;line-height:1.35;margin-bottom:2.5rem}
+
+/* ---------- lista de espera ---------- */
+.form-espera{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:2rem}
+.form-espera input{
+  flex:1 1 260px;max-width:340px;padding:1.05rem 1.2rem;border:1px solid rgba(46,35,23,.25);
+  background:transparent;font-family:var(--sans);font-size:.95rem;color:inherit;
+}
+.form-espera input::placeholder{color:rgba(46,35,23,.45)}
+.form-espera button{border:none;cursor:pointer}
+
+/* ---------- footer ---------- */
+footer{background:var(--tinta);color:rgba(247,244,239,.72);padding:4rem 0 3rem;text-align:center;font-size:.82rem}
+footer .mark{font-family:var(--serif);font-size:1.1rem;letter-spacing:.24em;text-transform:uppercase;color:var(--crema);display:block;margin-bottom:1.5rem}
+footer a{color:var(--dorado);text-decoration:none}
+footer .legal{margin-top:2rem;opacity:.55;font-size:.74rem}
+
+/* ---------- cta fijo móvil ---------- */
+.cta-fijo{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;padding:.85rem 1rem;
+  background:rgba(247,244,239,.96);backdrop-filter:blur(10px);
+  box-shadow:0 -1px 0 rgba(46,35,23,.1);
+  transform:translateY(110%);transition:transform .4s ease;
+}
+.cta-fijo.on{transform:translateY(0)}
+.cta-fijo .btn{display:block;text-align:center;padding-block:1rem}
+@media(min-width:860px){.cta-fijo{display:none}}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= NAV ======================= -->
+<nav class="nav" id="nav">
+  <a class="mark" href="#top">El Arte de Reinventarte</a>
+  <a class="nav-cta" href="#reservar">Quiero mi lugar</a>
+</nav>
+
+<!-- ======================= HERO ======================= -->
+<header class="hero" id="top">
+  <figure class="img" data-file="assets/hero-villa.jpg">
+    <img src="../assets/hero-villa.jpg" alt="Villa privada en la Toscana al atardecer">
+  </figure>
+  <div class="hero-inner">
+    <p class="eyebrow">Retiro íntimo · Arezzo, Toscana</p>
+    <h1>El Arte de<br><span class="script">Reinventarte</span></h1>
+    <p class="fecha">2 · 3 · 4 de octubre de 2026 — Tres días, dos noches en una villa privada</p>
+    <div class="rule"></div>
+    <a class="btn" href="#reservar">Quiero mi lugar</a>
+    <span class="escasez">Solo 12 mujeres · Cupos limitados</span>
+  </div>
+</header>
+
+<!-- ======================= ESPEJO ======================= -->
+<section class="espejo bg-lino">
+  <div class="wrap narrow center">
+    <p class="rv">Tu vida funciona.</p>
+    <p class="rv">Pero hace tiempo que ya no te representa.</p>
+    <p class="rv">Y en algún lugar lo sabes: no necesitas otra señal, necesitas una decisión.</p>
+    <p class="rv">¿Te gusta tu versión del futuro?</p>
+  </div>
+</section>
+
+<!-- ======================= QUÉ ES ======================= -->
+<section>
+  <div class="wrap center">
+    <p class="eyebrow rv">Qué es este retiro</p>
+    <h2 class="rv">Tres días para detenerte,<br>escucharte y volver a ti</h2>
+    <p class="lead narrow rv" style="margin-top:2rem">
+      No es un viaje. No es un taller. Es un espacio cerrado, con doce mujeres,
+      en una villa privada de la campiña toscana, diseñado para que salgas de aquí
+      con dirección y no solo con emoción.
+    </p>
+    <div class="pilares">
+      <div class="pilar rv">
+        <span class="num">I</span>
+        <h3>Detenerte</h3>
+        <p>Bajar el ruido.</p>
+      </div>
+      <div class="pilar rv">
+        <span class="num">II</span>
+        <h3>Entenderte</h3>
+        <p>Ver lo que has estado evitando.</p>
+      </div>
+      <div class="pilar rv">
+        <span class="num">III</span>
+        <h3>Decidir</h3>
+        <p>Tomar decisiones reales.<br>Salir con dirección.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PROGRAMA ======================= -->
+<!-- PENDIENTE: sustituir el contenido de cada día por el itinerario real -->
+<section class="bg-oliva" id="programa">
+  <div class="wrap">
+    <div class="center">
+      <p class="eyebrow rv">El programa</p>
+      <h2 class="rv">Cómo se viven estos tres días</h2>
+    </div>
+
+    <article class="dia rv">
+      <div class="dia-txt">
+        <span class="num">01</span>
+        <h3>Llegar y soltar</h3>
+        <p>El primer día no se empieza: se aterriza. Dejar el ruido en la puerta de la villa.</p>
+        <ul>
+          <li>PENDIENTE — actividad de la mañana</li>
+          <li>PENDIENTE — actividad de la tarde</li>
+          <li>PENDIENTE — cena de bienvenida</li>
+        </ul>
+      </div>
+      <figure class="img" data-file="assets/dia-1.jpg">
+        <img src="../assets/dia-1.jpg" alt="Llegada a la villa">
+      </figure>
+    </article>
+
+    <article class="dia rv">
+      <div class="dia-txt">
+        <span class="num">02</span>
+        <h3>Mirar de frente</h3>
+        <p>El día más profundo. Aquí es donde aparece lo que llevas tiempo evitando.</p>
+        <ul>
+          <li>PENDIENTE — actividad de la mañana</li>
+          <li>PENDIENTE — trabajo del mediodía</li>
+          <li>PENDIENTE — círculo al atardecer</li>
+        </ul>
+      </div>
+      <figure class="img" data-file="assets/dia-2.jpg">
+        <img src="../assets/dia-2.jpg" alt="Círculo de mujeres al atardecer">
+      </figure>
+    </article>
+
+    <article class="dia rv">
+      <div class="dia-txt">
+        <span class="num">03</span>
+        <h3>Decidir y volver</h3>
+        <p>No te vas con apuntes. Te vas con una decisión tomada y un plan que te cabe en la vida.</p>
+        <ul>
+          <li>PENDIENTE — actividad de cierre</li>
+          <li>PENDIENTE — plan de regreso</li>
+          <li>PENDIENTE — despedida</li>
+        </ul>
+      </div>
+      <figure class="img" data-file="assets/dia-3.jpg">
+        <img src="../assets/dia-3.jpg" alt="Despedida en la villa">
+      </figure>
+    </article>
+  </div>
+</section>
+
+<!-- ======================= LA VILLA ======================= -->
+<section class="bg-lino" id="villa">
+  <div class="wrap center">
+    <p class="eyebrow rv">El lugar</p>
+    <h2 class="rv">Una villa privada<br>en la campiña de Arezzo</h2>
+    <p class="lead narrow rv" style="margin-top:2rem">
+      Piedra, cipreses, una mesa larga y el silencio de la Toscana al atardecer.
+      Durante tres días la villa es solo nuestra.
+    </p>
+    <div class="galeria">
+      <figure class="img rv" data-file="assets/villa-1.jpg"><img src="../assets/villa-1.jpg" alt="Exterior de la villa"></figure>
+      <figure class="img rv" data-file="assets/villa-2.jpg"><img src="../assets/villa-2.jpg" alt="Jardín y piscina"></figure>
+      <figure class="img rv" data-file="assets/villa-3.jpg"><img src="../assets/villa-3.jpg" alt="Habitación"></figure>
+      <figure class="img rv" data-file="assets/villa-4.jpg"><img src="../assets/villa-4.jpg" alt="Mesa larga en el jardín"></figure>
+      <figure class="img rv" data-file="assets/villa-5.jpg"><img src="../assets/villa-5.jpg" alt="Paisaje toscano"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= INCLUYE ======================= -->
+<!-- PENDIENTE: confirmar qué entra y qué no -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <p class="eyebrow rv">Qué incluye</p>
+      <h2 class="rv">Todo resuelto,<br>menos tu vuelo</h2>
+    </div>
+    <div class="dos-col">
+      <div class="rv">
+        <h3>Incluido</h3>
+        <ul class="lista">
+          <li>Alojamiento 2 noches en la villa privada</li>
+          <li>Todas las comidas y cenas de autor</li>
+          <li>Programa completo de los tres días</li>
+          <li>Traslados desde el punto de encuentro acordado</li>
+          <li>Materiales de trabajo del retiro</li>
+          <li>PENDIENTE — otros elementos incluidos</li>
+        </ul>
+      </div>
+      <div class="rv">
+        <h3>No incluido</h3>
+        <ul class="lista no">
+          <li>Vuelos hasta Italia</li>
+          <li>Seguro de viaje</li>
+          <li>Gastos personales</li>
+          <li>PENDIENTE — otras exclusiones</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ANFITRIONAS ======================= -->
+<section class="bg-oliva" id="anfitrionas">
+  <div class="wrap center">
+    <p class="eyebrow rv">Quién te acompaña</p>
+    <h2 class="rv">Tres mujeres que ya<br>se reinventaron antes</h2>
+    <div class="anfitrionas">
+      <div class="anfitriona rv">
+        <figure class="img" data-file="assets/egda.jpg"><img src="../assets/egda.jpg" alt="Egda Elena"></figure>
+        <h3>Egda Elena</h3>
+        <p class="rol">Fundadora</p>
+        <p>Latina, raíces en el mundo y hogar en Italia. Se ha reinventado en distintos países y etapas. Hoy acompaña a mujeres que están justo en ese punto.</p>
+        <a class="ig" href="https://www.instagram.com/egdaelena/" target="_blank" rel="noopener">@egdaelena</a>
+      </div>
+      <div class="anfitriona rv">
+        <figure class="img" data-file="assets/fabiana.jpg"><img src="../assets/fabiana.jpg" alt="Fabiana Constanza"></figure>
+        <h3>Fabiana Constanza</h3>
+        <p class="rol">PENDIENTE — rol</p>
+        <p>PENDIENTE — bio corta, dos o tres líneas.</p>
+        <a class="ig" href="https://www.instagram.com/fabianaconstanza_/" target="_blank" rel="noopener">@fabianaconstanza_</a>
+      </div>
+      <div class="anfitriona rv">
+        <figure class="img" data-file="assets/rosa.jpg"><img src="../assets/rosa.jpg" alt="Rosa Rodrigues"></figure>
+        <h3>Rosa Rodrigues</h3>
+        <p class="rol">PENDIENTE — rol</p>
+        <p>PENDIENTE — bio corta, dos o tres líneas.</p>
+        <a class="ig" href="https://www.instagram.com/rosarodrigues11_11/" target="_blank" rel="noopener">@rosarodrigues11_11</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TESTIMONIOS ======================= -->
+<!-- PENDIENTE: sustituir por testimonios reales con nombre y foto -->
+<section class="bg-lino">
+  <div class="wrap center">
+    <p class="eyebrow rv">Lo que dicen</p>
+    <h2 class="rv">Una comunidad que ya<br>está esperando esto</h2>
+    <div class="testimonios">
+      <div class="testimonio rv">
+        <q>Reinventarse es atreverse a inventar, a vivir una aventura que transformará tu vida.</q>
+        <cite>Fabiana Constanza</cite>
+      </div>
+      <div class="testimonio rv">
+        <q>PENDIENTE — testimonio real de una participante o de la comunidad.</q>
+        <cite>PENDIENTE — nombre</cite>
+      </div>
+      <div class="testimonio rv">
+        <q>PENDIENTE — testimonio real de una participante o de la comunidad.</q>
+        <cite>PENDIENTE — nombre</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PARA QUIÉN ======================= -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <p class="eyebrow rv">Antes de reservar</p>
+      <h2 class="rv">Esto no es para todas</h2>
+    </div>
+    <div class="para-quien">
+      <div class="rv">
+        <h3>Es para ti si…</h3>
+        <ul class="lista">
+          <li>Tu vida se ve bien por fuera y no te representa por dentro</li>
+          <li>Estás en una transición: pareja, trabajo, país, maternidad, etapa</li>
+          <li>Llevas tiempo posponiendo una decisión que ya conoces</li>
+          <li>Quieres estar con mujeres que están en el mismo punto</li>
+        </ul>
+      </div>
+      <div class="rv">
+        <h3>No es para ti si…</h3>
+        <ul class="lista no">
+          <li>Buscas unas vacaciones en la Toscana</li>
+          <li>Esperas que alguien te diga qué hacer con tu vida</li>
+          <li>No estás dispuesta a mirar lo incómodo</li>
+          <li>Necesitas acompañamiento clínico o terapéutico</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= INVERSIÓN ======================= -->
+<!-- PENDIENTE: precio, depósito y plan de pagos reales -->
+<section class="bg-oliva" id="reservar">
+  <div class="wrap center">
+    <p class="eyebrow rv">La inversión</p>
+    <h2 class="rv">Tu lugar en la villa</h2>
+    <div class="precio-card rv">
+      <p class="eyebrow" style="margin-bottom:0">Retiro completo · 3 días, 2 noches</p>
+      <span class="precio">PENDIENTE €</span>
+      <p class="precio-nota">Habitación compartida · Todo incluido salvo vuelos</p>
+      <ul class="pagos">
+        <li><span>Depósito de reserva</span><span>PENDIENTE €</span></li>
+        <li><span>Segundo pago</span><span>PENDIENTE €</span></li>
+        <li><span>Pago final</span><span>PENDIENTE €</span></li>
+      </ul>
+      <a class="btn" href="#" data-cta="reservar">Reservar mi lugar</a>
+      <p style="margin:1.6rem 0 0;font-size:.8rem;opacity:.7">Quedan 12 plazas · La reserva se confirma con el depósito</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <p class="eyebrow rv">Dudas frecuentes</p>
+      <h2 class="rv">Lo que suelen preguntarme</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Voy sola, ¿es incómodo?</summary>
+        <p>La mayoría viene sola. Es justamente lo que hace que el grupo funcione: nadie llega con un papel que interpretar.</p>
+      </details>
+      <details>
+        <summary>¿Necesito visado para Italia?</summary>
+        <p>PENDIENTE — respuesta según nacionalidades más frecuentes de la comunidad.</p>
+      </details>
+      <details>
+        <summary>¿En qué idioma es el retiro?</summary>
+        <p>Todo el retiro se desarrolla en español.</p>
+      </details>
+      <details>
+        <summary>¿Hay exigencia física?</summary>
+        <p>PENDIENTE — confirmar nivel de caminatas y actividades al aire libre.</p>
+      </details>
+      <details>
+        <summary>¿Cómo llego a la villa?</summary>
+        <p>PENDIENTE — aeropuerto recomendado y punto de encuentro para el traslado.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si tengo que cancelar?</summary>
+        <p>PENDIENTE — política de cancelación y reembolso del depósito.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CIERRE ======================= -->
+<section class="cierre">
+  <figure class="img" data-file="assets/cierre.jpg">
+    <img src="../assets/cierre.jpg" alt="Atardecer en la campiña toscana">
+  </figure>
+  <div class="cierre-inner">
+    <p class="frase">Cuando por fin te eliges,<br>el universo entiende el idioma.</p>
+    <a class="btn" href="#reservar">Quiero mi lugar</a>
+  </div>
+</section>
+
+<!-- ======================= LISTA DE ESPERA ======================= -->
+<section class="bg-lino">
+  <div class="wrap center narrow">
+    <p class="eyebrow rv">¿Todavía no es el momento?</p>
+    <h2 class="rv">Déjame tu correo</h2>
+    <p class="rv" style="margin-top:1.5rem">
+      Te envío las 7 señales de que estás a un paso de reinventarte y te aviso
+      cuando se abran las próximas fechas.
+    </p>
+    <!-- PENDIENTE: conectar action a tu proveedor de email o formulario -->
+    <form class="form-espera rv" action="#" method="post">
+      <input type="email" name="email" placeholder="tu@correo.com" required aria-label="Tu correo electrónico">
+      <button class="btn" type="submit">Enviármelo</button>
+    </form>
+  </div>
+</section>
+
+<!-- ======================= FOOTER ======================= -->
+<footer>
+  <div class="wrap">
+    <span class="mark">El Arte de Reinventarte</span>
+    <p>
+      <a href="https://www.instagram.com/elartereinventarte/" target="_blank" rel="noopener">@elartereinventarte</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.instagram.com/egdaelena/" target="_blank" rel="noopener">@egdaelena</a>
+    </p>
+    <p class="legal">© 2026 El Arte de Reinventarte. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<div class="cta-fijo" id="ctaFijo">
+  <a class="btn" href="#reservar">Quiero mi lugar · 2–4 Oct 2026</a>
+</div>
+
+<script>
+// imágenes ausentes -> placeholder con el nombre de archivo esperado
+document.querySelectorAll('.img img').forEach(function(img){
+  var mark = function(){ img.closest('.img').classList.add('missing'); };
+  img.addEventListener('error', mark);
+  if (img.complete && img.naturalWidth === 0) mark();
+});
+
+// reveal al hacer scroll
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+// nav sólido + cta fijo
+var nav = document.getElementById('nav');
+var cta = document.getElementById('ctaFijo');
+var onScroll = function(){
+  var y = window.scrollY;
+  nav.classList.toggle('solid', y > window.innerHeight * 0.85);
+  cta.classList.toggle('on', y > window.innerHeight * 1.1);
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>
