@@ -22,6 +22,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.snap{scroll-snap-type:y mandatory}
 body{
   margin:0;background:var(--tinta);color:var(--hueso);
   font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.75;
@@ -79,6 +80,11 @@ p{margin:0 0 1.2em}
   position:relative;min-height:100svh;display:grid;place-items:center;
   overflow:hidden;isolation:isolate;text-align:center;
 }
+html.snap .portada,
+html.snap .calma,
+html.snap .acto{scroll-snap-align:start;scroll-snap-stop:always}
+/* el programa es el ultimo anclaje: sirve de salida hacia el scroll libre */
+html.snap #programa{scroll-snap-align:start}
 .lienzo .fondo{position:absolute;inset:0;z-index:-2;margin:0}
 .lienzo .fondo img{width:100%;height:100%;object-fit:cover}
 .lienzo::after{content:'';position:absolute;inset:0;z-index:-1}
@@ -108,7 +114,8 @@ p{margin:0 0 1.2em}
 @keyframes pulso{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
 
 /* ---------- bloque de texto sobre color ---------- */
-.calma{background:var(--hueso);color:var(--tinta);padding:clamp(5rem,11vw,8rem) 0}
+.calma{background:var(--hueso);color:var(--tinta);padding:clamp(5rem,11vw,8rem) 0;
+  min-height:100svh;display:grid;place-items:center}
 .calma .kicker{color:var(--dorado)}
 .calma .enlace{color:var(--tinta)}
 .calma .enlace:hover{color:var(--dorado)}
@@ -126,7 +133,7 @@ p{margin:0 0 1.2em}
 .acto p{font-family:var(--serif);font-size:clamp(1.15rem,2vw,1.5rem);color:rgba(246,242,234,.94);margin:0}
 
 /* ---------- programa ---------- */
-.programa{background:var(--tinta);padding:clamp(5rem,12vw,9rem) 0}
+.programa{background:var(--tinta);padding:clamp(5rem,12vw,9rem) 0;scroll-snap-align:none}
 .jornada{
   display:grid;gap:2rem;padding-block:clamp(2.5rem,5vw,4rem);
   border-top:1px solid rgba(246,242,234,.14);align-items:center;
@@ -157,7 +164,7 @@ p{margin:0 0 1.2em}
 .pista{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--humo);text-align:center;margin-top:1.5rem}
 
 /* ---------- datos ---------- */
-.datos{background:var(--hueso);color:var(--tinta);padding:clamp(5rem,12vw,9rem) 0}
+.datos{background:var(--hueso);color:var(--tinta);padding:clamp(5rem,12vw,9rem) 0;scroll-snap-align:none}
 .datos .kicker{color:var(--dorado)}
 .rejilla{display:grid;gap:1px;background:rgba(28,23,16,.14);border:1px solid rgba(28,23,16,.14);margin-top:3rem}
 @media(min-width:640px){.rejilla{grid-template-columns:repeat(2,1fr)}}
@@ -224,9 +231,14 @@ footer a{color:var(--dorado);text-decoration:none}
 .rv{opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.2,.7,.3,1),transform .85s cubic-bezier(.2,.7,.3,1)}
 .rv.in{opacity:1;transform:none}
 .rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+@media(max-height:620px){
+  html.snap{scroll-snap-type:none}
+  .calma{min-height:0}
+}
 @media(prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
+  html.snap{scroll-snap-type:none}
   .baja::after{animation:none}
 }
 </style>
@@ -509,6 +521,17 @@ var ioz = new IntersectionObserver(function(entries){
   entries.forEach(function(e){ e.target.classList.toggle('vista', e.isIntersecting); });
 }, { threshold: 0.25 });
 document.querySelectorAll('.lienzo').forEach(function(el){ ioz.observe(el); });
+
+// el anclaje por seccion solo vive hasta el programa; despues, scroll libre
+var doc = document.documentElement;
+var prog = document.getElementById('programa');
+function actualizarSnap(){
+  var limite = prog.offsetTop - window.innerHeight * 0.12;
+  doc.classList.toggle('snap', window.scrollY < limite);
+}
+window.addEventListener('scroll', actualizarSnap, { passive: true });
+window.addEventListener('resize', actualizarSnap);
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) actualizarSnap();
 
 var nav = document.getElementById('nav');
 var barra = document.getElementById('barra');
