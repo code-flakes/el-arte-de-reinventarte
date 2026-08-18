@@ -112,6 +112,7 @@ section{padding:clamp(5rem,11vw,9rem) 0;position:relative}
 /* ---------- hero ---------- */
 .hero{min-height:100svh;display:grid;place-items:center;padding:0;overflow:hidden;isolation:isolate}
 .hero .img{position:absolute;inset:0;z-index:-2}
+.hero .img.missing::after{display:none}
 .hero::after{
   content:'';position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,rgba(46,35,23,.55) 0%,rgba(46,35,23,.25) 40%,rgba(46,35,23,.72) 100%);
