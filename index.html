@@ -52,7 +52,7 @@ p{margin:0 0 1.2em}
   text-transform:uppercase;margin:0;
   font-variation-settings:'SOFT' 0,'WONK' 0;
 }
-.xl{font-size:clamp(2.9rem,11vw,7.6rem);letter-spacing:-.03em}
+.xl{font-size:clamp(1.9rem,10.5vw,7.6rem);letter-spacing:-.03em}
 .lg{font-size:clamp(2.6rem,9vw,6.4rem)}
 .md{font-size:clamp(1.8rem,4.2vw,3.1rem);letter-spacing:-.01em;font-weight:600}
 .serif{font-family:var(--serif);font-weight:300;font-size:clamp(1.2rem,2.1vw,1.55rem);line-height:1.65}
@@ -65,6 +65,15 @@ p{margin:0 0 1.2em}
 }
 .enlace:hover{color:var(--oro);border-color:var(--oro);letter-spacing:.26em}
 .enlace.oro{color:var(--oro)}
+/* zona pulsable comoda en movil sin alterar el diseno: los enlaces finos
+   se quedan igual de finos, pero el dedo acierta */
+.enlace,.nav .der a,.nav .logo{position:relative}
+.enlace::before,.nav .der a::before,.nav .logo::before{
+  /* solo en vertical: ensanchar tambien metia scroll horizontal de sobra */
+  content:'';position:absolute;inset:-12px 0;
+}
+/* los enlaces en linea no admiten el truco anterior: les damos alto de verdad */
+.trio a,footer a,.alternativa a{display:inline-block;padding-block:.6rem}
 .wrap{max-width:1300px;margin-inline:auto;padding-inline:clamp(1.4rem,5vw,4rem)}
 .centro{text-align:center}
 .estrecho{max-width:56ch;margin-inline:auto}
@@ -92,6 +101,11 @@ p{margin:0 0 1.2em}
   .nav{grid-template-columns:1fr auto}
   .nav .der a{font-size:.64rem;letter-spacing:.14em}
 }
+@media(max-width:420px){
+  .nav{padding-inline:1.1rem;column-gap:.7rem}
+  .nav .logo{font-size:.63rem;letter-spacing:.1em}
+  .nav .der a{font-size:.58rem;letter-spacing:.1em}
+}
 
 /* ---------- lienzos a pantalla ---------- */
 .lienzo{
@@ -113,7 +127,7 @@ html.snap #identificacion{scroll-snap-align:start}
 .lienzo::after{content:'';position:absolute;inset:0;z-index:-1}
 .velo-suave::after{background:linear-gradient(180deg,rgba(18,14,9,.66),rgba(18,14,9,.28) 45%,rgba(18,14,9,.86))}
 .velo-fuerte::after{background:linear-gradient(180deg,rgba(18,14,9,.68),rgba(18,14,9,.5) 50%,rgba(18,14,9,.76))}
-.lienzo-inner{padding:7rem clamp(1.4rem,5vw,3rem) 5rem;max-width:1000px;width:100%}
+.lienzo-inner{padding:7rem clamp(1.4rem,5vw,3rem) 5rem;max-width:min(1000px,100%);width:100%}
 .lienzo .kicker{color:var(--oro)}
 
 /* ---------- portada ---------- */
@@ -203,8 +217,14 @@ html.snap #identificacion{scroll-snap-align:start}
 
 /* ---------- datos prácticos ---------- */
 .rejilla{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);margin-top:0}
-@media(min-width:560px){.rejilla{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1000px){.rejilla{grid-template-columns:repeat(5,1fr)}}
+@media(min-width:560px){
+  .rejilla{grid-template-columns:repeat(2,1fr)}
+  .rejilla > div:last-child{grid-column:1/-1}
+}
+@media(min-width:1000px){
+  .rejilla{grid-template-columns:repeat(5,1fr)}
+  .rejilla > div:last-child{grid-column:auto}
+}
 .rejilla > div{background:var(--noche);padding:2rem 1.4rem;text-align:center}
 .rejilla dt{font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--humo);margin-bottom:.6rem}
 .rejilla dd{margin:0;font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.25}
@@ -232,7 +252,7 @@ html.snap #identificacion{scroll-snap-align:start}
 
 /* ---------- anfitrionas ---------- */
 .trio{display:grid;gap:3rem;margin-top:clamp(2.5rem,6vw,4rem)}
-@media(min-width:820px){.trio{grid-template-columns:repeat(3,1fr);gap:2.5rem}}
+@media(min-width:700px){.trio{grid-template-columns:repeat(3,1fr);gap:2.5rem}}
 .trio figure{margin:0 0 1.6rem;aspect-ratio:3/4;overflow:hidden}
 .trio img{width:100%;height:100%;object-fit:cover;filter:grayscale(.3) brightness(.9) saturate(.9);transition:filter 1.2s ease}
 .trio > div:hover img{filter:none}
@@ -294,7 +314,7 @@ html.snap #identificacion{scroll-snap-align:start}
 .aviso{margin-top:1.4rem;font-size:.85rem;color:var(--oro);text-align:center;min-height:1.4em}
 .alternativa{margin-top:2rem;text-align:center;font-size:.85rem;color:var(--humo)}
 .alternativa a{color:var(--oro)}
-.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.trampa{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .enviar[disabled]{opacity:.55;cursor:progress}
 .gracias{max-width:52ch;margin:0 auto;text-align:center;display:grid;align-content:center}
 .gracias h3{margin:0 0 1.6rem}
@@ -784,7 +804,7 @@ footer a{color:var(--oro);text-decoration:none}
       <!-- trampa antispam: invisible para una persona, tentadora para un bot -->
       <div class="trampa" aria-hidden="true">
         <label for="apodo">No rellenes este campo</label>
-        <input id="apodo" name="apodo" type="text" tabindex="-1" autocomplete="off">
+        <input id="apodo" name="apodo" type="text" tabindex="-1" autocomplete="off" style="width:1px">
       </div>
 
       <button class="enviar" id="enviar" type="submit">Enviar mi aplicación</button>
