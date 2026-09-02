@@ -13,6 +13,80 @@
 <meta property="og:title" content="El Arte de Reinventarte · Toscana 2026">
 <meta property="og:description" content="Tres días en una villa privada de la Toscana para soltar, ver y elegir. Del 2 al 4 de octubre de 2026. Diez mujeres.">
 <meta property="og:image" content="assets/og.jpg">
+<!-- ===== Meta Pixel =====================================================
+     Estado: implementado pero INACTIVO. Faltan dos cosas para encenderlo:
+
+       1. pixelId  — lo entrega marketing desde el Administrador de eventos
+                     de Meta > Origenes de datos. Son 15 o 16 digitos.
+       2. consentimiento — esta landing todavia no tiene banner de cookies y
+                     recibe aspirantes de la UE. El Pixel deja cookies y manda
+                     datos a Meta, asi que necesita consentimiento previo. El
+                     checkbox del formulario NO sirve para esto: es permiso de
+                     contacto comercial y ademas llega al final del recorrido.
+
+     Mientras falte cualquiera de las dos, no se carga nada de Meta.
+     Cuando exista el banner, que llame a window.activarMedicion() al aceptar.
+========================================================================== -->
+<script>
+window.MEDICION = {
+  pixelId: '',                  // PENDIENTE: ID de 15-16 digitos
+  requiereConsentimiento: true  // no apagar sin un banner de cookies en su lugar
+};
+(function(){
+  var cfg = window.MEDICION, cargado = false, pendientes = [];
+
+  function hayConsentimiento(){
+    if (!cfg.requiereConsentimiento) return true;
+    try { return localStorage.getItem('medicion-consentida') === 'si'; }
+    catch(e){ return false; }   // navegador sin almacenamiento: no asumimos permiso
+  }
+
+  function cargar(){
+    if (cargado || !cfg.pixelId || !hayConsentimiento()) return;
+    cargado = true;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', cfg.pixelId);
+    fbq('track', 'PageView');
+    // eventos ocurridos antes de aceptar: se emiten ahora, no se pierden
+    pendientes.splice(0).forEach(function(ev){ emitir(ev[0], ev[1]); });
+  }
+
+  function emitir(evento, datos){
+    try { if (window.fbq) fbq('track', evento, datos || {}); } catch(e){}
+  }
+
+  // lo llamara el banner de cookies cuando exista
+  window.activarMedicion = function(){
+    try { localStorage.setItem('medicion-consentida','si'); } catch(e){}
+    cargar();
+  };
+  window.revocarMedicion = function(){
+    try { localStorage.removeItem('medicion-consentida'); } catch(e){}
+  };
+
+  // Unico punto de entrada para medir. Si Meta no cargo, esta bloqueado por un
+  // ad blocker o revienta, aqui muere: nunca puede tumbar la pagina ni el envio.
+  // Lo que ocurra antes de aceptar se guarda y se emite al aceptar; si nunca se
+  // acepta, se queda en memoria y desaparece con la pestaña.
+  window.medir = function(evento, datos){
+    if (!cargado) { if (pendientes.length < 20) pendientes.push([evento, datos]); return; }
+    emitir(evento, datos);
+  };
+
+  cargar();
+})();
+</script>
+<!-- Respaldo sin JavaScript. Va junto con el ID, pero ojo: una imagen no puede
+     consultar el consentimiento, asi que solo debe activarse si se decide que
+     el Pixel puede cargar sin banner (o para trafico fuera de la UE).
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"></noscript>
+-->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -897,6 +971,14 @@ window.addEventListener('scroll', function(){
   barra.classList.toggle('on', y > h * 1.2 && !enFormulario);
 }, { passive: true });
 
+// ---- ViewContent: una sola vez, al asomar la seccion de aplicacion ----
+var ioAplicar = new IntersectionObserver(function(entradas){
+  entradas.forEach(function(e){
+    if (e.isIntersecting) { medir('ViewContent'); ioAplicar.disconnect(); }
+  });
+}, { threshold: 0, rootMargin: '0px 0px -25% 0px' });
+ioAplicar.observe(document.getElementById('aplicar'));
+
 // ---- selector de paises ----
 var PAISES = ('Alemania,Andorra,Angola,Arabia Saudita,Argelia,Argentina,Australia,Austria,Bélgica,Bolivia,Brasil,Bulgaria,Canadá,Chile,China,Chipre,Colombia,Corea del Sur,Costa Rica,Croacia,Cuba,Dinamarca,Ecuador,Egipto,El Salvador,Emiratos Árabes Unidos,Eslovaquia,Eslovenia,España,Estados Unidos,Estonia,Filipinas,Finlandia,Francia,Grecia,Guatemala,Honduras,Hungría,India,Indonesia,Irlanda,Islandia,Israel,Italia,Japón,Letonia,Líbano,Lituania,Luxemburgo,Malta,Marruecos,México,Nicaragua,Noruega,Nueva Zelanda,Países Bajos,Panamá,Paraguay,Perú,Polonia,Portugal,Puerto Rico,Reino Unido,República Checa,República Dominicana,Rumanía,Rusia,Serbia,Singapur,Sudáfrica,Suecia,Suiza,Tailandia,Turquía,Ucrania,Uruguay,Venezuela,Otro').split(',');
 var selPais = document.getElementById('pais');
@@ -1039,6 +1121,10 @@ form.addEventListener('submit', function(e){
   }).then(function(r){
     if (!r.ok) throw new Error('HTTP ' + r.status);
     mostrarGracias();
+    // El Lead va aqui, no dentro de mostrarGracias: esa funcion tambien la usa
+    // la trampa antispam, y un bot no es una aplicacion. Y va despues de
+    // mostrarGracias para que la confirmacion no dependa nunca de Meta.
+    medir('Lead');
   }).catch(function(){
     boton.disabled = false;
     aviso.classList.add('mal');
