@@ -26,11 +26,14 @@
   --humo:#B2A28C;
   --dorado:#C79A4E;
   --oro:#E5CB94;
+  --alerta:#E8907A;
   --display:'Fraunces',Georgia,'Times New Roman',serif;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Jost',-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
+/* cualquier display propio anula el atributo hidden: esto lo blinda */
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 html.snap{scroll-snap-type:y mandatory}
 body{
@@ -312,6 +315,14 @@ html.snap #identificacion{scroll-snap-align:start}
 }
 .enviar:hover{background:var(--oro)}
 .aviso{margin-top:1.4rem;font-size:.85rem;color:var(--oro);text-align:center;min-height:1.4em}
+.aviso.mal{color:var(--alerta)}
+/* errores de formulario: visibles pero dentro del tono de la pagina */
+.error{margin:.55rem 0 0;font-size:.79rem;line-height:1.45;color:var(--alerta);display:none}
+.error.on{display:block}
+.campo.mal input,.campo.mal select{border-bottom-color:var(--alerta)}
+.campo.mal label{color:var(--alerta)}
+.consentimiento.mal span{color:var(--alerta)}
+.consentimiento.mal input{outline:1px solid var(--alerta);outline-offset:3px}
 .alternativa{margin-top:2rem;text-align:center;font-size:.85rem;color:var(--humo)}
 .alternativa a{color:var(--oro)}
 .trampa{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
@@ -910,15 +921,102 @@ var boton = document.getElementById('enviar');
 var gracias = document.getElementById('gracias');
 var alternativa = document.getElementById('alternativa');
 
+// Cada campo dice exactamente que le pasa. Un "revisa el formulario" generico
+// obliga a adivinar, y aqui cada duda cuesta una aplicacion.
+var REGLAS = {
+  nombre:   function(v){ if(!v.trim()) return 'Escribe tu nombre.';
+                         if(v.trim().length < 2) return 'El nombre parece demasiado corto.'; },
+  apellido: function(v){ if(!v.trim()) return 'Escribe tu apellido.';
+                         if(v.trim().length < 2) return 'El apellido parece demasiado corto.'; },
+  edad:     function(v){ if(!v.trim()) return 'Indica tu edad.';
+                         var n = Number(v);
+                         if(!Number.isInteger(n)) return 'Escribe tu edad solo con números.';
+                         if(n < 18) return 'El retiro es para mayores de 18 años.';
+                         if(n > 99) return 'Revisa la edad, parece un error.'; },
+  ciudad:   function(v){ if(!v.trim()) return 'Escribe tu ciudad de residencia.'; },
+  pais:     function(v){ if(!v) return 'Selecciona tu país de residencia.'; },
+  whatsapp: function(v){ if(!v.trim()) return 'Escribe tu WhatsApp con el código del país.';
+                         var limpio = v.replace(/[\s()\-.]/g, '');
+                         if(!/^\+?\d{8,15}$/.test(limpio))
+                           return 'Ese número no parece válido. Incluye el código del país, por ejemplo +34 600 000 000.'; },
+  email:    function(v){ if(!v.trim()) return 'Escribe tu correo electrónico.';
+                         if(!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(v.trim()))
+                           return 'Ese correo no parece válido. Revisa que tenga la forma nombre@dominio.com.'; }
+};
+
+// creamos el hueco del mensaje debajo de cada campo, y lo enlazamos por accesibilidad
+Object.keys(REGLAS).forEach(function(nombre){
+  var campo = form.elements[nombre];
+  var hueco = document.createElement('p');
+  hueco.className = 'error';
+  hueco.id = 'error-' + nombre;
+  campo.closest('.campo').appendChild(hueco);
+  campo.setAttribute('aria-describedby', hueco.id);
+  // en cuanto lo corrige, el error desaparece: nadie escribe con un aviso rojo delante
+  campo.addEventListener('input', function(){ if(campo.dataset.mal) revisarCampo(nombre); });
+  campo.addEventListener('blur', function(){ if(campo.value.trim()) revisarCampo(nombre); });
+  if (campo.tagName === 'SELECT') campo.addEventListener('change', function(){ revisarCampo(nombre); });
+});
+
+var consentimiento = form.elements['consentimiento'];
+var huecoConsent = document.createElement('p');
+huecoConsent.className = 'error';
+huecoConsent.id = 'error-consentimiento';
+consentimiento.closest('.consentimiento').after(huecoConsent);
+consentimiento.setAttribute('aria-describedby', huecoConsent.id);
+consentimiento.addEventListener('change', function(){ if(consentimiento.checked) marcarConsentimiento(null); });
+
+function marcarCampo(nombre, mensaje){
+  var campo = form.elements[nombre];
+  var caja = campo.closest('.campo');
+  var hueco = document.getElementById('error-' + nombre);
+  caja.classList.toggle('mal', !!mensaje);
+  hueco.textContent = mensaje || '';
+  hueco.classList.toggle('on', !!mensaje);
+  campo.setAttribute('aria-invalid', mensaje ? 'true' : 'false');
+  if (mensaje) campo.dataset.mal = '1'; else delete campo.dataset.mal;
+}
+
+function marcarConsentimiento(mensaje){
+  consentimiento.closest('.consentimiento').classList.toggle('mal', !!mensaje);
+  huecoConsent.textContent = mensaje || '';
+  huecoConsent.classList.toggle('on', !!mensaje);
+  consentimiento.setAttribute('aria-invalid', mensaje ? 'true' : 'false');
+}
+
+function revisarCampo(nombre){
+  var mensaje = REGLAS[nombre](form.elements[nombre].value) || null;
+  marcarCampo(nombre, mensaje);
+  return mensaje;
+}
+
+function revisarTodo(){
+  var fallos = [];
+  Object.keys(REGLAS).forEach(function(nombre){
+    if (revisarCampo(nombre)) fallos.push(form.elements[nombre]);
+  });
+  if (!consentimiento.checked) {
+    marcarConsentimiento('Necesitamos tu permiso para poder contactarte.');
+    fallos.push(consentimiento);
+  } else {
+    marcarConsentimiento(null);
+  }
+  return fallos;
+}
+
 form.addEventListener('submit', function(e){
   e.preventDefault();
 
-  if (!form.checkValidity()) {
-    aviso.textContent = 'Revisa los campos marcados con * antes de enviar.';
-    var primero = form.querySelector(':invalid');
-    if (primero) primero.focus();
+  var fallos = revisarTodo();
+  if (fallos.length) {
+    aviso.classList.add('mal');
+    aviso.textContent = fallos.length === 1
+      ? 'Falta un dato, te lo señalamos abajo.'
+      : 'Faltan ' + fallos.length + ' datos, te los señalamos abajo.';
+    fallos[0].focus();
     return;
   }
+  aviso.classList.remove('mal');
   // un bot relleno la trampa: fingimos normalidad y no enviamos nada
   if (form.elements['apodo'].value) { mostrarGracias(); return; }
 
@@ -943,6 +1041,7 @@ form.addEventListener('submit', function(e){
     mostrarGracias();
   }).catch(function(){
     boton.disabled = false;
+    aviso.classList.add('mal');
     aviso.textContent = 'No pudimos enviar tu aplicación. Inténtalo de nuevo o escríbenos a info@elartereinventarte.com.';
   });
 });
