@@ -294,6 +294,12 @@ html.snap #identificacion{scroll-snap-align:start}
 .aviso{margin-top:1.4rem;font-size:.85rem;color:var(--oro);text-align:center;min-height:1.4em}
 .alternativa{margin-top:2rem;text-align:center;font-size:.85rem;color:var(--humo)}
 .alternativa a{color:var(--oro)}
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.enviar[disabled]{opacity:.55;cursor:progress}
+.gracias{max-width:52ch;margin:0 auto;text-align:center;display:grid;align-content:center}
+.gracias h3{margin:0 0 1.6rem}
+.gracias p{color:var(--humo);font-family:var(--serif);font-size:clamp(1.1rem,2.1vw,1.35rem);line-height:1.6}
+.gracias .enlace{margin-top:1.4rem}
 
 /* ---------- pie ---------- */
 footer{background:var(--tinta);border-top:1px solid var(--linea);padding:4rem 0 6.5rem;text-align:center}
@@ -333,6 +339,7 @@ footer a{color:var(--oro);text-decoration:none}
   .lienzo .fondo img{transition:none}
 }
 </style>
+<noscript><style>.rv{opacity:1;transform:none}.formulario{display:none}</style></noscript>
 </head>
 <body>
 
@@ -717,8 +724,8 @@ footer a{color:var(--oro);text-decoration:none}
 </section>
 
 <!-- ===== APLICACIÓN ===== -->
-<!-- PENDIENTE: conectar el atributo action con el endpoint del CRM (Perfect Flow).
-     Mientras esté vacío, el JS bloquea el envío y muestra el aviso con el correo. -->
+<!-- El envio va por fetch en JSON al webhook de Activepieces (data-endpoint).
+     El atributo action queda como respaldo semantico; el JS siempre lo intercepta. -->
 <section class="seccion" id="aplicar">
   <div class="wrap">
     <div class="cabecera">
@@ -727,7 +734,9 @@ footer a{color:var(--oro);text-decoration:none}
       <p class="sub rv d2">Si una parte tuya ya sabe que es momento, empieza por aquí. No necesitas tener resuelta la siguiente etapa: solo estar dispuesta a mirarla.</p>
     </div>
 
-    <form class="formulario rv" id="form-aplicacion" action="" method="post" novalidate>
+    <form class="formulario rv" id="form-aplicacion" method="post" novalidate
+          action="https://cloud.activepieces.com/api/v1/webhooks/KgcMrBlY3d5QNL9u6Tj24"
+          data-endpoint="https://cloud.activepieces.com/api/v1/webhooks/KgcMrBlY3d5QNL9u6Tj24">
       <div class="campos">
         <div class="campo">
           <label for="nombre">Nombre *</label>
@@ -772,11 +781,25 @@ footer a{color:var(--oro);text-decoration:none}
       <input type="hidden" name="utm_term"><input type="hidden" name="url_entrada">
       <input type="hidden" name="referrer"><input type="hidden" name="fecha_aplicacion">
 
-      <button class="enviar" type="submit">Enviar mi aplicación</button>
+      <!-- trampa antispam: invisible para una persona, tentadora para un bot -->
+      <div class="trampa" aria-hidden="true">
+        <label for="apodo">No rellenes este campo</label>
+        <input id="apodo" name="apodo" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button class="enviar" id="enviar" type="submit">Enviar mi aplicación</button>
       <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
     </form>
 
-    <p class="alternativa rv">o escríbenos a <a href="mailto:info@elartereinventarte.com">info@elartereinventarte.com</a></p>
+    <!-- confirmacion en la propia pagina, sin sacarla del sitio -->
+    <div class="gracias" id="gracias" hidden>
+      <p class="kicker">Recibimos tu aplicación 🤎</p>
+      <h3 class="display md">Nos vemos<br>muy pronto</h3>
+      <p>Gracias por interesarte en vivir El Arte de Reinventarte · Toscana 2026. Nuestro equipo ya recibió tus datos y continuará la conversación contigo por WhatsApp para conocerte, responder tus preguntas y explicarte los siguientes pasos.</p>
+      <a class="enlace oro" href="https://www.instagram.com/elartereinventarte/" target="_blank" rel="noopener">Conocer más en @elartereinventarte</a>
+    </div>
+
+    <p class="alternativa rv" id="alternativa">o escríbenos a <a href="mailto:info@elartereinventarte.com">info@elartereinventarte.com</a></p>
   </div>
 </section>
 
@@ -821,7 +844,9 @@ document.querySelectorAll('.lienzo').forEach(function(el){ ioz.observe(el); });
 // el anclaje por seccion solo vive hasta el primer bloque de contenido; despues, scroll libre
 var doc = document.documentElement;
 var salida = document.getElementById('identificacion');
+var enviado = false;
 function actualizarSnap(){
+  if (enviado) { doc.classList.remove('snap'); return; }
   var limite = salida.offsetTop - window.innerHeight * 0.12;
   doc.classList.toggle('snap', window.scrollY < limite);
 }
@@ -861,24 +886,59 @@ var params = new URLSearchParams(location.search);
 form.elements['url_entrada'].value = location.href;
 form.elements['referrer'].value = document.referrer || '';
 
+var boton = document.getElementById('enviar');
+var gracias = document.getElementById('gracias');
+var alternativa = document.getElementById('alternativa');
+
 form.addEventListener('submit', function(e){
-  form.elements['fecha_aplicacion'].value = new Date().toISOString();
+  e.preventDefault();
 
   if (!form.checkValidity()) {
-    e.preventDefault();
     aviso.textContent = 'Revisa los campos marcados con * antes de enviar.';
     var primero = form.querySelector(':invalid');
     if (primero) primero.focus();
     return;
   }
-  // Sin endpoint conectado todavia: evitamos un envio que se perderia.
-  if (!form.getAttribute('action')) {
-    e.preventDefault();
-    aviso.textContent = 'El formulario aún no está conectado. Escríbenos a info@elartereinventarte.com y te acompañamos.';
-    return;
-  }
+  // un bot relleno la trampa: fingimos normalidad y no enviamos nada
+  if (form.elements['apodo'].value) { mostrarGracias(); return; }
+
+  form.elements['fecha_aplicacion'].value = new Date().toISOString();
+
+  var datos = {};
+  new FormData(form).forEach(function(valor, clave){
+    if (clave !== 'apodo') datos[clave] = valor;
+  });
+  datos.consentimiento = form.elements['consentimiento'].checked;
+  datos.origen = 'landing';
+
+  boton.disabled = true;
   aviso.textContent = 'Enviando tu aplicación…';
+
+  fetch(form.dataset.endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    mostrarGracias();
+  }).catch(function(){
+    boton.disabled = false;
+    aviso.textContent = 'No pudimos enviar tu aplicación. Inténtalo de nuevo o escríbenos a info@elartereinventarte.com.';
+  });
 });
+
+function mostrarGracias(){
+  enviado = true;
+  doc.classList.remove('snap');
+  // La confirmacion hereda el alto que ocupaba el formulario. Asi la pagina no se
+  // acorta de golpe, el lector no pierde su sitio y no hace falta mover el scroll:
+  // el mensaje aparece justo donde estaba mirando.
+  var alto = form.offsetHeight;
+  form.hidden = true;
+  if (alternativa) alternativa.hidden = true;
+  gracias.style.minHeight = alto + 'px';
+  gracias.hidden = false;
+}
 </script>
 <!-- Powered by LandingHub -->
 <style>
