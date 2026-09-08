@@ -13,22 +13,30 @@
 <meta property="og:title" content="El Arte de Reinventarte · Toscana 2026">
 <meta property="og:description" content="Tres días en una villa privada de la Toscana para soltar, ver y elegir. Del 2 al 4 de octubre de 2026. Diez mujeres.">
 <meta property="og:image" content="assets/og.jpg">
-<!-- ===== Meta Pixel =====================================================
-     Estado: implementado pero INACTIVO. Faltan dos cosas para encenderlo:
+<!-- ===== Medicion: GA4 + Meta Pixel ======================================
+     GA4 esta ACTIVO. Se carga siempre, pero arranca en modo denegado
+     (Consent Mode v2): manda pings sin cookies ni identificador, que es lo
+     que permite recuperar los datos si mas adelante la persona acepta. Por
+     eso este bloque va en el <head>: el consentimiento por defecto tiene que
+     quedar fijado antes de que cargue el script de Google.
+
+     El Meta Pixel sigue INACTIVO. Faltan dos cosas para encenderlo:
 
        1. pixelId  — lo entrega marketing desde el Administrador de eventos
                      de Meta > Origenes de datos. Son 15 o 16 digitos.
        2. consentimiento — esta landing todavia no tiene banner de cookies y
                      recibe aspirantes de la UE. El Pixel deja cookies y manda
-                     datos a Meta, asi que necesita consentimiento previo. El
-                     checkbox del formulario NO sirve para esto: es permiso de
-                     contacto comercial y ademas llega al final del recorrido.
+                     datos a Meta, y a diferencia de GA4 no tiene modo
+                     denegado: o carga con permiso, o no carga. El checkbox
+                     del formulario NO sirve para esto: es permiso de contacto
+                     comercial y ademas llega al final del recorrido.
 
-     Mientras falte cualquiera de las dos, no se carga nada de Meta.
-     Cuando exista el banner, que llame a window.activarMedicion() al aceptar.
+     Cuando exista el banner, que llame a window.activarMedicion() al aceptar:
+     eso enciende el Pixel y pasa GA4 a modo concedido de una sola vez.
 ========================================================================== -->
 <script>
 window.MEDICION = {
+  ga4Id: 'G-SFZSE6LM99',
   pixelId: '',                  // PENDIENTE: ID de 15-16 digitos
   requiereConsentimiento: true  // no apagar sin un banner de cookies en su lugar
 };
@@ -41,6 +49,43 @@ window.MEDICION = {
     catch(e){ return false; }   // navegador sin almacenamiento: no asumimos permiso
   }
 
+  /* ---------- GA4 (Consent Mode v2) ---------- */
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+
+  if (cfg.ga4Id) {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4Id);
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    /* `anonymize_ip` no existe en GA4 (era de Universal Analytics): pasarlo solo
+       crea un parametro de evento inutil. GA4 no guarda la IP en ningun caso. */
+    gtag('config', cfg.ga4Id);
+  }
+
+  function consentirGA4(ok){
+    gtag('consent', 'update', {
+      ad_storage: ok ? 'granted' : 'denied',
+      ad_user_data: ok ? 'granted' : 'denied',
+      ad_personalization: ok ? 'granted' : 'denied',
+      analytics_storage: ok ? 'granted' : 'denied'
+    });
+  }
+
+  /* ---------- Meta Pixel ---------- */
+
   function cargar(){
     if (cargado || !cfg.pixelId || !hayConsentimiento()) return;
     cargado = true;
@@ -52,32 +97,46 @@ window.MEDICION = {
     fbq('init', cfg.pixelId);
     fbq('track', 'PageView');
     // eventos ocurridos antes de aceptar: se emiten ahora, no se pierden
-    pendientes.splice(0).forEach(function(ev){ emitir(ev[0], ev[1]); });
+    pendientes.splice(0).forEach(function(ev){ emitirMeta(ev[0], ev[1]); });
   }
 
-  function emitir(evento, datos){
+  function emitirMeta(evento, datos){
     try { if (window.fbq) fbq('track', evento, datos || {}); } catch(e){}
   }
 
   // lo llamara el banner de cookies cuando exista
   window.activarMedicion = function(){
     try { localStorage.setItem('medicion-consentida','si'); } catch(e){}
+    consentirGA4(true);
     cargar();
   };
   window.revocarMedicion = function(){
     try { localStorage.removeItem('medicion-consentida'); } catch(e){}
+    consentirGA4(false);
   };
 
-  // Unico punto de entrada para medir. Si Meta no cargo, esta bloqueado por un
-  // ad blocker o revienta, aqui muere: nunca puede tumbar la pagina ni el envio.
-  // Lo que ocurra antes de aceptar se guarda y se emite al aceptar; si nunca se
-  // acepta, se queda en memoria y desaparece con la pestaña.
+  /* ---------- Eventos ---------- */
+
+  /* GA4 y Meta no llaman igual a lo mismo. El sitio emite el nombre de Meta y
+     aqui se traduce al evento recomendado de GA4. */
+  var NOMBRE_GA4 = { ViewContent: 'view_item', Lead: 'generate_lead' };
+
+  // Unico punto de entrada para medir. Si alguna de las dos no cargo, esta
+  // bloqueada por un ad blocker o revienta, aqui muere: nunca puede tumbar la
+  // pagina ni el envio. Lo de Meta que ocurra antes de aceptar se guarda y se
+  // emite al aceptar; si nunca se acepta, desaparece con la pestaña.
   window.medir = function(evento, datos){
-    if (!cargado) { if (pendientes.length < 20) pendientes.push([evento, datos]); return; }
-    emitir(evento, datos);
+    var p = datos || {};
+    try {
+      if (cfg.ga4Id) gtag('event', NOMBRE_GA4[evento] || evento, p);
+    } catch(e){}
+    if (!cargado) { if (pendientes.length < 20) pendientes.push([evento, p]); return; }
+    emitirMeta(evento, p);
   };
 
-  cargar();
+  // Quien ya acepto en una visita anterior no vuelve a ver el banner: hay que
+  // restituir su decision en cada carga o GA4 se quedaria denegado para siempre.
+  if (hayConsentimiento()) { consentirGA4(true); cargar(); }
 })();
 </script>
 <!-- Respaldo sin JavaScript. Va junto con el ID, pero ojo: una imagen no puede
