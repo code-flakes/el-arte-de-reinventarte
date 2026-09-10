@@ -106,8 +106,10 @@ window.MEDICION = {
     consentirGA4(true);
     cargar();
   };
+  /* Guarda un 'no' en vez de borrar la clave: sin marca, un rechazo es
+     indistinguible de no haber contestado y el banner volveria en cada visita. */
   window.revocarMedicion = function(){
-    try { localStorage.removeItem('medicion-consentida'); } catch(e){}
+    try { localStorage.setItem('medicion-consentida','no'); } catch(e){}
     consentirGA4(false);
   };
 
@@ -497,7 +499,38 @@ footer a{color:var(--oro);text-decoration:none}
   html.snap{scroll-snap-type:none}
   .baja::after{animation:none}
   .lienzo .fondo img{transition:none}
+  .cookies{animation:none}
 }
+
+/* ---------- banner de cookies ---------- */
+/* Por encima del cta fijo (z-index 70): mientras se decide, es lo unico que
+   se pide. Dos barras fijas a la vez en un movil no las lee nadie, asi que
+   el cta se retira y vuelve en cuanto hay respuesta. */
+.cookies{
+  position:fixed;z-index:80;
+  left:clamp(1rem,4vw,2.2rem);right:clamp(1rem,4vw,2.2rem);
+  bottom:calc(clamp(1rem,4vw,2.2rem) + env(safe-area-inset-bottom));
+  max-width:32rem;
+  background:var(--carbon);border:1px solid var(--linea);
+  padding:clamp(1.35rem,4vw,1.7rem);
+  box-shadow:0 30px 70px -35px rgba(0,0,0,.95);
+  animation:cookies-entra .55s cubic-bezier(.2,.8,.25,1) both;
+}
+html.cookies-abierto .barra{display:none}
+@keyframes cookies-entra{ from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+.cookies p{
+  font-family:var(--sans);font-size:.88rem;line-height:1.65;color:var(--humo);margin:0 0 1.15rem;
+}
+.cookies .acciones{display:flex;gap:.7rem;flex-wrap:wrap}
+.cookies button{
+  flex:1 1 10rem;cursor:pointer;
+  font-family:var(--sans);font-size:.74rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  padding:.95rem 1rem;transition:background .35s ease,color .35s ease,border-color .35s ease;
+}
+.cookies .si{background:var(--dorado);color:#160F06;border:1px solid var(--dorado)}
+.cookies .si:hover{background:var(--oro);border-color:var(--oro)}
+.cookies .no{background:none;color:var(--humo);border:1px solid var(--linea)}
+.cookies .no:hover{color:var(--hueso);border-color:var(--hueso)}
 </style>
 <noscript><style>.rv{opacity:1;transform:none}.formulario{display:none}</style></noscript>
 </head>
@@ -986,6 +1019,17 @@ footer a{color:var(--oro);text-decoration:none}
   </div>
 </footer>
 
+<!-- ===== BANNER DE COOKIES =====
+     Nace oculto: si ya hay respuesta guardada no debe llegar a verse ni un
+     parpadeo, y sin JavaScript no habria forma de contestarlo. -->
+<div class="cookies" id="cookies" role="dialog" aria-label="Cookies" hidden>
+  <p>Usamos cookies para entender cómo llega la gente hasta aquí. Solo si nos das permiso: si prefieres que no, la página funciona exactamente igual.</p>
+  <div class="acciones">
+    <button class="si" type="button" id="cookies-si">Aceptar</button>
+    <button class="no" type="button" id="cookies-no">Solo lo necesario</button>
+  </div>
+</div>
+
 <div class="barra" id="barra">
   <a href="#aplicar">Aplica para ir a Toscana · 2—4 Oct 2026</a>
 </div>
@@ -1199,6 +1243,32 @@ function mostrarGracias(){
   gracias.style.minHeight = alto + 'px';
   gracias.hidden = false;
 }
+
+// ---- banner de cookies ----
+// La puerta del Meta Pixel: hasta que alguien conteste aqui, no carga.
+(function(){
+  var caja = document.getElementById('cookies');
+  if (!caja) return;
+
+  var decidido;
+  // Sin almacenamiento no se puede recordar la respuesta, y un banner que
+  // reaparece en cada carga molesta mas de lo que protege: no se muestra.
+  try { decidido = localStorage.getItem('medicion-consentida'); }
+  catch(e){ return; }
+  if (decidido) return;
+
+  doc.classList.add('cookies-abierto');
+  caja.hidden = false;
+
+  function responder(acepta){
+    if (acepta) window.activarMedicion(); else window.revocarMedicion();
+    caja.hidden = true;
+    doc.classList.remove('cookies-abierto');
+  }
+
+  document.getElementById('cookies-si').addEventListener('click', function(){ responder(true); });
+  document.getElementById('cookies-no').addEventListener('click', function(){ responder(false); });
+})();
 </script>
 <!-- Powered by LandingHub -->
 <style>
