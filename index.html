@@ -20,16 +20,12 @@
      eso este bloque va en el <head>: el consentimiento por defecto tiene que
      quedar fijado antes de que cargue el script de Google.
 
-     El Meta Pixel sigue INACTIVO. Faltan dos cosas para encenderlo:
-
-       1. pixelId  — lo entrega marketing desde el Administrador de eventos
-                     de Meta > Origenes de datos. Son 15 o 16 digitos.
-       2. consentimiento — esta landing todavia no tiene banner de cookies y
-                     recibe aspirantes de la UE. El Pixel deja cookies y manda
-                     datos a Meta, y a diferencia de GA4 no tiene modo
-                     denegado: o carga con permiso, o no carga. El checkbox
-                     del formulario NO sirve para esto: es permiso de contacto
-                     comercial y ademas llega al final del recorrido.
+     El Meta Pixel ya tiene su ID, pero sigue SIN CARGAR: esta landing todavia
+     no tiene banner de cookies y recibe aspirantes de la UE. El Pixel deja
+     cookies y manda datos a Meta, y a diferencia de GA4 no tiene modo
+     denegado: o carga con permiso, o no carga. El checkbox del formulario NO
+     sirve para esto: es permiso de contacto comercial y ademas llega al final
+     del recorrido.
 
      Cuando exista el banner, que llame a window.activarMedicion() al aceptar:
      eso enciende el Pixel y pasa GA4 a modo concedido de una sola vez.
@@ -37,7 +33,7 @@
 <script>
 window.MEDICION = {
   ga4Id: 'G-SFZSE6LM99',
-  pixelId: '',                  // PENDIENTE: ID de 15-16 digitos
+  pixelId: '1052054824122515',
   requiereConsentimiento: true  // no apagar sin un banner de cookies en su lugar
 };
 (function(){
