@@ -199,6 +199,17 @@ p{margin:0 0 1.2em}
 }
 .enlace:hover{color:var(--oro);border-color:var(--oro);letter-spacing:.26em}
 .enlace.oro{color:var(--oro)}
+/* La llamada principal se ve como un boton, no como un enlace subrayado: es
+   la accion de la que vive la pagina y tiene que pesar mas que el resto. */
+.boton{
+  display:inline-block;background:var(--dorado);color:#160F06;text-decoration:none;
+  font-family:var(--sans);font-size:.78rem;font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:1.1rem 2.4rem;border:1px solid var(--dorado);
+  transition:background .35s ease,border-color .35s ease,transform .35s ease;
+}
+.boton:hover{background:var(--oro);border-color:var(--oro)}
+.boton:active{transform:translateY(1px)}
 /* zona pulsable comoda en movil sin alterar el diseno: los enlaces finos
    se quedan igual de finos, pero el dedo acierta */
 .enlace,.nav .der a,.nav .logo{position:relative}
@@ -252,12 +263,16 @@ html.snap .acto{scroll-snap-align:start;scroll-snap-stop:always}
 html.snap #identificacion{scroll-snap-align:start}
 .lienzo .fondo{position:absolute;inset:0;z-index:-2;margin:0}
 /* la imagen se apaga, no se aclara: menos brillo, mas elegancia */
-.lienzo .fondo img{
+.lienzo .fondo img,
+.lienzo .fondo video{
   width:100%;height:100%;object-fit:cover;
   filter:brightness(.7) saturate(.9) contrast(1.05);
   transition:transform 2.4s cubic-bezier(.2,.7,.3,1);
 }
+/* el acercamiento lento es para las fotos fijas: el video ya se mueve solo y
+   sumarle escala solo recorta encuadre */
 .lienzo.vista .fondo img{transform:scale(1.06)}
+.lienzo .fondo video{display:block}
 .lienzo::after{content:'';position:absolute;inset:0;z-index:-1}
 .velo-suave::after{background:linear-gradient(180deg,rgba(18,14,9,.66),rgba(18,14,9,.28) 45%,rgba(18,14,9,.86))}
 .velo-fuerte::after{background:linear-gradient(180deg,rgba(18,14,9,.68),rgba(18,14,9,.5) 50%,rgba(18,14,9,.76))}
@@ -266,17 +281,24 @@ html.snap #identificacion{scroll-snap-align:start}
 
 /* ---------- portada ---------- */
 .portada .fecha{
-  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:clamp(.7rem,3vw,2.5rem);
+  display:grid;justify-items:center;gap:clamp(.6rem,1.6vw,.9rem);
   margin:2.4rem 0 2.8rem;font-family:var(--serif);font-size:clamp(.95rem,1.6vw,1.2rem);
   letter-spacing:.18em;text-transform:uppercase;color:rgba(242,236,225,.95);
+}
+.portada .fecha p{margin:0}
+.portada .fecha .donde{
+  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
+  gap:clamp(.7rem,3vw,2.5rem);color:rgba(242,236,225,.8);
 }
 .portada .fecha span{white-space:nowrap}
 .portada .fecha i{width:34px;height:1px;background:rgba(242,236,225,.4);display:block}
 @media(max-width:520px){.portada .fecha i{width:3px;height:3px;border-radius:50%;background:rgba(242,236,225,.55)}}
 .portada .promesa{
   font-family:var(--serif);font-size:clamp(1.1rem,4vw,1.45rem);line-height:1.6;
-  max-width:34ch;margin:0 auto 2.6rem;color:rgba(242,236,225,.92);
+  max-width:40ch;margin:0 auto 2.6rem;color:rgba(242,236,225,.92);
 }
+.portada .promesa b{font-weight:400;color:var(--oro)}
+.portada .promesa i{font-style:italic;color:rgba(242,236,225,.75)}
 .baja{
   position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);
   font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,236,225,.75);
@@ -523,7 +545,10 @@ html.cookies-abierto .barra{display:none}
 }
 .cookies .acciones{display:flex;gap:.7rem;flex-wrap:wrap}
 .cookies button{
-  flex:1 1 10rem;cursor:pointer;
+  /* 8rem y no 10: con la base mas ancha los dos botones no entraban por unos
+     pocos pixeles en un movil estrecho, se apilaban y el banner crecia tanto
+     que tapaba la llamada de la portada. */
+  flex:1 1 8rem;cursor:pointer;
   font-family:var(--sans);font-size:.74rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
   padding:.95rem 1rem;transition:background .35s ease,color .35s ease,border-color .35s ease;
 }
@@ -544,15 +569,48 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== PORTADA ===== -->
 <header class="lienzo portada velo-suave" id="top">
-  <figure class="fondo"><img src="assets/hero-villa.jpg" alt="Villa toscana entre cipreses al atardecer" fetchpriority="high"></figure>
+  <!-- El poster es el primer fotograma del propio video: mientras carga no hay
+       salto, y es lo unico que se ve si el navegador no lo reproduce. El video
+       cierra con un fundido hacia su inicio, asi que el bucle no da el tirón. -->
+  <figure class="fondo">
+    <video id="video-portada" poster="assets/hero-poster.jpg" muted loop playsinline
+           aria-label="Vista aérea de la campiña toscana al atardecer"></video>
+  </figure>
+  <script>
+  /* El video se enciende desde aqui, no desde el HTML, por dos razones.
+
+     Una: quien pide menos movimiento no deberia encontrarse un plano aereo en
+     bucle detras del titular, y ninguna media query puede parar un video. Sin
+     fuente no hay descarga ni reproduccion, y queda el poster.
+
+     Dos: elegir la copia por tamano de pantalla. El atributo media de <source>
+     solo lo respeta Chrome; Safari y Firefox lo ignoran y se quedarian con la
+     primera fuente en cualquier pantalla. Aqui la eleccion es la misma en los
+     tres. Va justo tras el elemento para no retrasar el arranque. */
+  (function(){
+    var v = document.getElementById('video-portada');
+    if (!v || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    /* Copia ligera para pantallas estrechas: el mismo plano por un tercio del
+       peso, que en datos moviles es la diferencia que se nota. */
+    v.src = matchMedia('(max-width:780px)').matches ? 'assets/hero-movil.mp4' : 'assets/hero.mp4';
+    v.autoplay = true;
+    /* Si el navegador rechaza la reproduccion automatica queda el poster, que
+       es el primer fotograma: nadie ve un hueco negro. */
+    var intento = v.play();
+    if (intento && intento.catch) intento.catch(function(){});
+  })();
+  </script>
   <div class="lienzo-inner">
     <p class="kicker rv in">Retiro privado · Diez mujeres</p>
     <h1 class="display xl rv in d1">Reinventarte</h1>
+    <!-- Los dias van en su propia linea: puestos en fila con el ano y el lugar,
+         la fecha completa parte el renglon y deja un guion suelto al final. -->
     <div class="fecha rv in d2">
-      <span>2 — 4 Octubre</span><i></i><span>2026</span><i></i><span>Toscana</span>
+      <p class="dias">Viernes 2, Sábado 3 y Domingo 4 de octubre</p>
+      <p class="donde"><span>2026</span><i></i><span>Toscana</span></p>
     </div>
-    <p class="promesa rv in d2">Tres días para soltar lo que pesa, ver lo que estaba en sombra y volver con las decisiones que vienes postergando.</p>
-    <a class="enlace rv in d3" href="#aplicar">Aplica para ir a Toscana</a>
+    <p class="promesa rv in d2"><b>3 días para reinventarte:</b> 3 días para soltar lo que pesa, ver lo que estaba en sombra y volver con las decisiones que vienes postergando <i>(esas que cambian la vida)</i>.</p>
+    <a class="boton rv in d3" href="#aplicar">Aplica para ir a Toscana</a>
   </div>
   <span class="baja">Desliza</span>
 </header>
