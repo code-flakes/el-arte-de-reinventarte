@@ -309,9 +309,21 @@ html.snap #identificacion{scroll-snap-align:start}
 /* ---------- el espejo ---------- */
 .calma{background:var(--noche);color:var(--hueso);padding:clamp(5rem,11vw,8rem) 0;
   min-height:100svh;display:grid;place-items:center}
-.frases p{font-family:var(--display);font-size:clamp(1.5rem,5.4vw,2.7rem);line-height:1.3;font-weight:400;margin:0 0 1.4rem}
+/* Las frases van en tipografia grande, y el ancho general de texto (56ch
+   medidos sobre el cuerpo pequeno) las parte en cuatro renglones cada una: el
+   bloque deja de caber en una pantalla, que es justo lo que pide el scroll por
+   secciones. Aqui el limite se mide en la tipografia que se esta usando. */
+.calma .estrecho{max-width:min(100%,46rem)}
+.frases p{font-family:var(--display);font-size:clamp(1.5rem,5.4vw,2.7rem);line-height:1.3;font-weight:400;margin:0 0 1.2rem}
 .frases .cierra{font-style:italic;color:var(--oro);margin-bottom:0}
 .frases .nota{font-family:var(--serif);font-size:clamp(1.05rem,2vw,1.3rem);color:var(--humo);line-height:1.65;margin:2.6rem auto 0;max-width:46ch}
+/* La pregunta final cierra el bloque y tiene que sonar mas alto que la nota,
+   pero no competir con la pregunta que hace de bisagra: misma tipografia que
+   las frases grandes, cuerpo intermedio y sin el dorado. */
+.frases .remate{
+  font-size:clamp(1.25rem,3.2vw,1.8rem);line-height:1.4;
+  margin:2.2rem auto 0;max-width:30ch;
+}
 
 /* ---------- identificacion ---------- */
 .identificacion{background:var(--noche)}
@@ -618,11 +630,11 @@ html.cookies-abierto .barra{display:none}
 <!-- ===== EL ESPEJO ===== -->
 <section class="calma">
   <div class="wrap centro estrecho frases">
-    <p class="kicker rv">Antes de empezar</p>
-    <p class="rv">Tu vida funciona.</p>
-    <p class="rv d1">Y hace tiempo que ya no te representa.</p>
+    <p class="rv">Has construido una vida que &#8220;funciona&#8221;. Cumples, resuelves, avanzas.</p>
+    <p class="rv d1">pero hace tiempo que ya no te representa.</p>
     <p class="cierra rv d2">¿Te gusta tu versión del futuro?</p>
     <p class="nota rv d3">Reinventarte no significa borrar lo vivido. Significa aprender a empezar de nuevo con todo lo que ya sabes de ti.</p>
+    <p class="remate rv d3">Solo piensa: si todo siguiera igual durante los próximos años, ¿serías feliz?</p>
   </div>
 </section>
 
