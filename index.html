@@ -348,8 +348,10 @@ html.snap #identificacion{scroll-snap-align:start}
 
 /* ---------- sobre egda ---------- */
 .egda{display:grid;gap:clamp(2rem,5vw,4rem);align-items:center;max-width:1000px;margin-inline:auto}
-@media(min-width:820px){.egda{grid-template-columns:.8fr 1.2fr}}
-.egda figure{margin:0;aspect-ratio:4/5;overflow:hidden}
+@media(min-width:820px){.egda{grid-template-columns:1fr 1.15fr}}
+/* Apaisada: en el retrato de Egda el logo de la pared queda a su derecha, y
+   un encuadre vertical no admite a los dos: partia el logo a media palabra. */
+.egda figure{margin:0;aspect-ratio:5/4;overflow:hidden}
 .egda img{width:100%;height:100%;object-fit:cover;filter:brightness(.92) saturate(.95)}
 .egda .texto p{font-family:var(--serif);font-size:clamp(1.1rem,2.1vw,1.35rem);color:rgba(242,236,225,.9);line-height:1.6}
 .egda .pregunta{font-family:var(--display);font-style:italic;font-weight:600;color:var(--oro);font-size:clamp(1.15rem,2.6vw,1.5rem);line-height:1.4}
@@ -377,8 +379,11 @@ html.snap #identificacion{scroll-snap-align:start}
 /* ---------- galería en cinta ---------- */
 .cinta{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cinta::-webkit-scrollbar{display:none}
-.cinta figure{margin:0;flex:0 0 clamp(240px,72vw,440px);aspect-ratio:3/4;scroll-snap-align:center;overflow:hidden;position:relative}
-@media(min-width:760px){.cinta figure{flex-basis:clamp(300px,32vw,440px)}}
+/* Apaisada, no vertical: las fotos de la casa vienen en horizontal, y un
+   recorte a 3/4 se quedaba con una franja central que no contaba la
+   habitacion. En movil la tarjeta ocupa casi todo el ancho. */
+.cinta figure{margin:0;flex:0 0 clamp(280px,86vw,560px);aspect-ratio:4/3;scroll-snap-align:center;overflow:hidden;position:relative}
+@media(min-width:760px){.cinta figure{flex-basis:clamp(360px,42vw,560px)}}
 .cinta img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s ease,filter 1.4s ease;filter:brightness(.85) saturate(.92)}
 .cinta figure:hover img{transform:scale(1.04);filter:brightness(1) saturate(1.02)}
 .pista{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--humo);text-align:center;margin-top:1.5rem}
@@ -651,7 +656,7 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== ACTO II · VER ===== -->
 <section class="lienzo acto velo-fuerte">
-  <figure class="fondo"><img src="assets/villa-5.jpg" alt="Camino de cipreses en la Toscana" loading="lazy"></figure>
+  <figure class="fondo"><img src="assets/camino-cipreses.jpg" alt="Camino de cipreses en la Toscana, visto desde el aire" loading="lazy"></figure>
   <div class="lienzo-inner">
     <span class="num rv">Acto segundo · Día dos · Conciencia</span>
     <h2 class="display lg rv d1">Ver</h2>
@@ -737,12 +742,12 @@ html.cookies-abierto .barra{display:none}
     </div>
   </div>
   <div class="cinta rv">
-    <figure><img src="assets/villa-1.jpg" alt="Exterior de la villa de piedra" loading="lazy"></figure>
-    <figure><img src="assets/villa-4.jpg" alt="Mesa preparada bajo los arcos" loading="lazy"></figure>
-    <figure><img src="assets/villa-3.jpg" alt="Habitación de la villa" loading="lazy"></figure>
-    <figure><img src="assets/villa-2.jpg" alt="Paisaje de colinas desde la villa" loading="lazy"></figure>
-    <figure><img src="assets/villa-5.jpg" alt="Camino de cipreses" loading="lazy"></figure>
-    <figure><img src="assets/cierre.jpg" alt="Atardecer sobre la campiña toscana" loading="lazy"></figure>
+    <figure><img src="assets/villa-1.jpg" alt="Fachada de piedra de la villa, con sus arcos" loading="lazy"></figure>
+    <figure><img src="assets/villa-2.jpg" alt="La piscina, con la casa al fondo" loading="lazy"></figure>
+    <figure><img src="assets/villa-3.jpg" alt="Mesa larga preparada bajo los arcos" loading="lazy"></figure>
+    <figure><img src="assets/villa-4.jpg" alt="Habitación con cama de dosel" loading="lazy"></figure>
+    <figure><img src="assets/villa-5.jpg" alt="Salón al aire libre sobre el valle" loading="lazy"></figure>
+    <figure><img src="assets/villa-6.jpg" alt="La casa entre viñedos y olivos" loading="lazy"></figure>
   </div>
   <p class="pista">Desliza para ver más →</p>
 </section>
@@ -899,7 +904,7 @@ html.cookies-abierto .barra{display:none}
       <h2 class="display md rv d1">Esto nace<br>de una historia real</h2>
     </div>
     <div class="egda">
-      <figure class="rv"><img src="assets/egda.jpg" alt="Egda Elena Padrón" loading="lazy"></figure>
+      <figure class="rv"><img src="assets/egda-retrato.jpg" alt="Egda Elena Padrón en el estudio de El Arte de Reinventarte" loading="lazy"></figure>
       <div class="texto rv d1">
         <p>El Arte de Reinventarte nace de la propia historia de reinvención de Egda Elena Padrón, creadora de contenido, empresaria y fundadora del proyecto.</p>
         <p>Después de vivir diferentes países, migraciones, cambios profesionales, maternidad y múltiples comienzos, Egda empezó a documentar una nueva etapa de su vida a través de <em>Reinventando mi vida en Italia</em>. De ahí nació una conversación mucho más grande: miles de mujeres se vieron reflejadas en la misma pregunta.</p>
@@ -924,7 +929,7 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== INVERSIÓN ===== -->
 <section class="lienzo velo-fuerte" id="inversion">
-  <figure class="fondo"><img src="assets/villa-4.jpg" alt="Mesa preparada en la villa" loading="lazy"></figure>
+  <figure class="fondo"><img src="assets/mesa-arcos.jpg" alt="Mesa preparada bajo los arcos, con el jardín al fondo" loading="lazy"></figure>
   <div class="lienzo-inner inversion">
     <p class="kicker rv">La inversión</p>
     <span class="cifra rv d1">1.399 €</span>
