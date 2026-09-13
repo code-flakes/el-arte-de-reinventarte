@@ -244,12 +244,14 @@ p{margin:0 0 1.2em}
 @media(max-width:760px){
   .nav .izq{display:none}
   .nav{grid-template-columns:1fr auto}
-  .nav .der a{font-size:.64rem;letter-spacing:.14em}
+  .nav .der a{font-size:.72rem;letter-spacing:.14em}
 }
 @media(max-width:420px){
   .nav{padding-inline:1.1rem;column-gap:.7rem}
-  .nav .logo{font-size:.63rem;letter-spacing:.1em}
-  .nav .der a{font-size:.58rem;letter-spacing:.1em}
+  /* Se cede espaciado entre letras antes que cuerpo: apretar la fuente se
+     lee peor que apretar el interletraje. */
+  .nav .logo{font-size:.72rem;letter-spacing:.06em}
+  .nav .der a{font-size:.74rem;letter-spacing:.05em}
 }
 
 /* ---------- lienzos a pantalla ---------- */
@@ -517,6 +519,7 @@ footer{background:var(--tinta);border-top:1px solid var(--linea);padding:4rem 0 
 @media(min-width:900px){footer{padding-bottom:3rem}}
 footer .logo{font-family:var(--display);font-weight:600;font-size:.95rem;letter-spacing:.24em;text-transform:uppercase;display:block;margin-bottom:1.5rem}
 footer p{font-size:.82rem;color:var(--humo)}
+footer .legal{margin-top:1.8rem;font-size:.66rem;opacity:.6}
 footer a{color:var(--oro);text-decoration:none}
 
 /* ---------- cta fijo móvil ---------- */
@@ -542,6 +545,30 @@ footer a{color:var(--oro);text-decoration:none}
   html.snap{scroll-snap-type:none}
   .calma{min-height:0}
 }
+/* ---------- suelo de legibilidad en telefono ----------
+   Los rotulos en versalitas con mucho interletraje son parte del tono de la
+   pagina, pero varios caian entre 9 y 11 px. En un monitor pasan; en la mano,
+   a la distancia real de lectura, no. Aqui solo se sube el cuerpo en pantalla
+   pequena: el diseno de escritorio se queda exactamente igual. */
+@media(max-width:600px){
+  .kicker{font-size:.8rem;letter-spacing:.22em}
+  .acto .num{font-size:.78rem;letter-spacing:.2em}
+  .baja{font-size:.72rem;letter-spacing:.24em}
+  .pista{font-size:.72rem;letter-spacing:.22em}
+  .pagos li{font-size:.72rem;letter-spacing:.12em}
+  .trio .rol{font-size:.76rem;letter-spacing:.14em}
+  .campo label{font-size:.74rem;letter-spacing:.14em}
+  .enlace{font-size:.86rem;letter-spacing:.16em}
+  .boton{font-size:.88rem;letter-spacing:.16em}
+  .barra a{font-size:.82rem;letter-spacing:.14em}
+  .enviar{font-size:.86rem;letter-spacing:.14em}
+  .alternativa{font-size:.92rem}
+  .rejilla dt{font-size:.76rem;letter-spacing:.14em}
+  .trio a{font-size:.76rem;letter-spacing:.12em}
+  .inversion .plazas{font-size:.74rem;letter-spacing:.16em}
+  footer .legal{font-size:.76rem}
+}
+
 @media(prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
@@ -655,7 +682,7 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== ACTO I · SOLTAR ===== -->
 <section class="lienzo acto velo-fuerte">
-  <figure class="fondo"><img src="assets/dia-2.jpg" alt="Campiña toscana entre la niebla" loading="lazy"></figure>
+  <figure class="fondo"><img src="assets/dia-2.jpg" alt="Mujer caminando sola por un campo toscano al atardecer" loading="lazy"></figure>
   <div class="lienzo-inner">
     <span class="num rv">Acto primero · Día uno · Cuerpo</span>
     <h2 class="display lg rv d1">Soltar</h2>
@@ -677,7 +704,7 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== ACTO III · ELEGIR ===== -->
 <section class="lienzo acto velo-fuerte">
-  <figure class="fondo"><img src="assets/dia-3.jpg" alt="Camino toscano al atardecer" loading="lazy"></figure>
+  <figure class="fondo"><img src="assets/dia-3.jpg" alt="Ventana abierta sobre el valle toscano" loading="lazy"></figure>
   <div class="lienzo-inner">
     <span class="num rv">Acto tercero · Día tres · Decisión</span>
     <h2 class="display lg rv d1">Elegir</h2>
@@ -927,7 +954,7 @@ html.cookies-abierto .barra{display:none}
 
 <!-- ===== QUÉ TE LLEVAS ===== -->
 <section class="lienzo velo-fuerte">
-  <figure class="fondo"><img src="assets/dia-1.jpg" alt="Mesa larga preparada en el jardín de la villa" loading="lazy"></figure>
+  <figure class="fondo"><img src="assets/dia-1.jpg" alt="Mesa preparada con girasoles frente a las colinas" loading="lazy"></figure>
   <div class="lienzo-inner">
     <p class="kicker rv">Qué te llevas</p>
     <h2 class="display md rv d1" style="margin-bottom:1.8rem">No solo te vas<br>sintiéndote distinta</h2>
@@ -1100,7 +1127,7 @@ html.cookies-abierto .barra{display:none}
       &nbsp;·&nbsp;
       <a href="mailto:info@elartereinventarte.com">info@elartereinventarte.com</a>
     </p>
-    <p style="margin-top:1.8rem;font-size:.66rem;opacity:.6">© 2026 El Arte de Reinventarte. Todos los derechos reservados.</p>
+    <p class="legal">© 2026 El Arte de Reinventarte. Todos los derechos reservados.</p>
   </div>
 </footer>
 
