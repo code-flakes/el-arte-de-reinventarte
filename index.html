@@ -20,15 +20,16 @@
      eso este bloque va en el <head>: el consentimiento por defecto tiene que
      quedar fijado antes de que cargue el script de Google.
 
-     El Meta Pixel ya tiene su ID, pero sigue SIN CARGAR: esta landing todavia
-     no tiene banner de cookies y recibe aspirantes de la UE. El Pixel deja
-     cookies y manda datos a Meta, y a diferencia de GA4 no tiene modo
-     denegado: o carga con permiso, o no carga. El checkbox del formulario NO
-     sirve para esto: es permiso de contacto comercial y ademas llega al final
-     del recorrido.
+     El Meta Pixel NO CARGA hasta que la persona acepta en el banner de
+     cookies del pie de esta pagina. Deja cookies y manda datos a Meta, y a
+     diferencia de GA4 no tiene modo denegado: o carga con permiso, o no
+     carga. El checkbox del formulario NO sirve para esto: es permiso de
+     contacto comercial y ademas llega al final del recorrido.
 
-     Cuando exista el banner, que llame a window.activarMedicion() al aceptar:
-     eso enciende el Pixel y pasa GA4 a modo concedido de una sola vez.
+     El banner llama a window.activarMedicion() al aceptar -enciende el Pixel
+     y pasa GA4 a modo concedido de una sola vez- y a revocarMedicion() al
+     rechazar. La politica de privacidad describe ese mecanismo: si se toca
+     aqui, hay que tocarla a ella.
 ========================================================================== -->
 <script>
 window.MEDICION = {
