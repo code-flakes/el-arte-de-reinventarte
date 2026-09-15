@@ -13,27 +13,26 @@
 <meta property="og:title" content="El Arte de Reinventarte · Toscana 2026">
 <meta property="og:description" content="Tres días en una villa privada de la Toscana para soltar, ver y elegir. Del 2 al 4 de octubre de 2026. Diez mujeres.">
 <meta property="og:image" content="assets/og.jpg">
-<!-- ===== Medicion: GA4 + Meta Pixel ======================================
-     GA4 esta ACTIVO. Se carga siempre, pero arranca en modo denegado
-     (Consent Mode v2): manda pings sin cookies ni identificador, que es lo
-     que permite recuperar los datos si mas adelante la persona acepta. Por
-     eso este bloque va en el <head>: el consentimiento por defecto tiene que
-     quedar fijado antes de que cargue el script de Google.
+<!-- ===== Medicion: solo Meta Pixel =====================================
+     El Pixel es del CLIENTE: su cuenta publicitaria, su ID, instalado a
+     peticion suya. CodeFlakes solo inserta y mantiene el fragmento.
 
-     El Meta Pixel NO CARGA hasta que la persona acepta en el banner de
-     cookies del pie de esta pagina. Deja cookies y manda datos a Meta, y a
-     diferencia de GA4 no tiene modo denegado: o carga con permiso, o no
-     carga. El checkbox del formulario NO sirve para esto: es permiso de
-     contacto comercial y ademas llega al final del recorrido.
+     NO CARGA hasta que la persona acepta en el banner de cookies del pie.
+     Deja cookies y manda datos a Meta, y no tiene modo denegado: o carga con
+     permiso, o no carga. El checkbox del formulario NO sirve para esto: es
+     permiso de contacto comercial y llega al final del recorrido.
 
-     El banner llama a window.activarMedicion() al aceptar -enciende el Pixel
-     y pasa GA4 a modo concedido de una sola vez- y a revocarMedicion() al
-     rechazar. La politica de privacidad describe ese mecanismo: si se toca
-     aqui, hay que tocarla a ella.
+     El banner llama a window.activarMedicion() al aceptar y a
+     revocarMedicion() al rechazar. La politica de privacidad describe ese
+     mecanismo: si se toca aqui, hay que tocarla a ella.
+
+     Aqui NO hay analitica. Se retiro GA4 a peticion del cliente: no la
+     necesita, y cargarla mandaba su IP a Google en cada visita, antes de
+     cualquier consentimiento. No volver a anadirla sin actualizar el contrato
+     y la politica.
 ========================================================================== -->
 <script>
 window.MEDICION = {
-  ga4Id: 'G-SFZSE6LM99',
   pixelId: '1052054824122515',
   requiereConsentimiento: true  // no apagar sin un banner de cookies en su lugar
 };
@@ -44,41 +43,6 @@ window.MEDICION = {
     if (!cfg.requiereConsentimiento) return true;
     try { return localStorage.getItem('medicion-consentida') === 'si'; }
     catch(e){ return false; }   // navegador sin almacenamiento: no asumimos permiso
-  }
-
-  /* ---------- GA4 (Consent Mode v2) ---------- */
-
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ window.dataLayer.push(arguments); };
-
-  gtag('consent', 'default', {
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-    functionality_storage: 'granted',
-    security_storage: 'granted',
-    wait_for_update: 500
-  });
-
-  if (cfg.ga4Id) {
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4Id);
-    document.head.appendChild(s);
-    gtag('js', new Date());
-    /* `anonymize_ip` no existe en GA4 (era de Universal Analytics): pasarlo solo
-       crea un parametro de evento inutil. GA4 no guarda la IP en ningun caso. */
-    gtag('config', cfg.ga4Id);
-  }
-
-  function consentirGA4(ok){
-    gtag('consent', 'update', {
-      ad_storage: ok ? 'granted' : 'denied',
-      ad_user_data: ok ? 'granted' : 'denied',
-      ad_personalization: ok ? 'granted' : 'denied',
-      analytics_storage: ok ? 'granted' : 'denied'
-    });
   }
 
   /* ---------- Meta Pixel ---------- */
@@ -104,21 +68,15 @@ window.MEDICION = {
   // lo llamara el banner de cookies cuando exista
   window.activarMedicion = function(){
     try { localStorage.setItem('medicion-consentida','si'); } catch(e){}
-    consentirGA4(true);
     cargar();
   };
   /* Guarda un 'no' en vez de borrar la clave: sin marca, un rechazo es
      indistinguible de no haber contestado y el banner volveria en cada visita. */
   window.revocarMedicion = function(){
     try { localStorage.setItem('medicion-consentida','no'); } catch(e){}
-    consentirGA4(false);
   };
 
   /* ---------- Eventos ---------- */
-
-  /* GA4 y Meta no llaman igual a lo mismo. El sitio emite el nombre de Meta y
-     aqui se traduce al evento recomendado de GA4. */
-  var NOMBRE_GA4 = { ViewContent: 'view_item', Lead: 'generate_lead', CompleteRegistration: 'sign_up' };
 
   // Unico punto de entrada para medir. Si alguna de las dos no cargo, esta
   // bloqueada por un ad blocker o revienta, aqui muere: nunca puede tumbar la
@@ -126,16 +84,13 @@ window.MEDICION = {
   // emite al aceptar; si nunca se acepta, desaparece con la pestaña.
   window.medir = function(evento, datos){
     var p = datos || {};
-    try {
-      if (cfg.ga4Id) gtag('event', NOMBRE_GA4[evento] || evento, p);
-    } catch(e){}
     if (!cargado) { if (pendientes.length < 20) pendientes.push([evento, p]); return; }
     emitirMeta(evento, p);
   };
 
   // Quien ya acepto en una visita anterior no vuelve a ver el banner: hay que
   // restituir su decision en cada carga o GA4 se quedaria denegado para siempre.
-  if (hayConsentimiento()) { consentirGA4(true); cargar(); }
+  if (hayConsentimiento()) { cargar(); }
 })();
 </script>
 <!-- Respaldo sin JavaScript. Va junto con el ID, pero ojo: una imagen no puede
@@ -145,9 +100,7 @@ window.MEDICION = {
   src="https://www.facebook.com/tr?id=PIXEL_ID&ev=PageView&noscript=1"></noscript>
 -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="assets/fonts.css" rel="stylesheet">
 <style>
 :root{
   --tinta:#120E09;    /* fondo base */
