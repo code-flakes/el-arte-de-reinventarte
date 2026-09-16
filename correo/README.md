@@ -69,3 +69,26 @@ PF-10 tiene que resolver cuatro cosas:
 
 Mientras PF-10 no exista, el flujo puede forzarse con `inputs.permitirSinBaja: true`, pero
 eso es enviar marketing sin vía de baja y contradice la política publicada.
+
+## El orden de los pasos
+
+```
+webhook de la landing  →  crear-lead.js  →  enviar-bienvenida.js  →  envío por Workspace
+```
+
+`crear-lead.js` va **primero** y no es opcional: sin él, quien se apunta recibe la
+bienvenida y no existe en ninguna parte — no hay a quién dar de baja, no hay
+consentimiento registrado, y la promesa de la política de guardar «la fecha de tu registro,
+el hecho de que diste tu consentimiento y el momento en que lo hiciste, como prueba de que
+el registro fue voluntario» no la cumple nadie.
+
+Crea en el estado **`nuevo`** («Nuevo lead»), y lo manda explícito en vez de confiar en el
+inicial por defecto: si mañana alguien reordena los estados en el CRM, el lead no se va en
+silencio a otro sitio.
+
+Necesita `inputs.tokenStation` — el `stations.automation_token` de El Arte — que va como
+Basic Auth. Devuelve `tokenBaja` para el paso siguiente.
+
+**Es idempotente por partida doble:** manda `Idempotency-Key`, y la deduplicación del CRM
+responde 200 con la ficha que ya existía en vez de crear otra. Un reintento del flujo no
+duplica a nadie.
