@@ -105,11 +105,38 @@ export const code = async (inputs) => {
 
   const ficha = await res.json().catch(() => ({}));
 
-  // 201 es alta; 200 es que ya existía y la deduplicación lo devolvió
-  // enriquecido. Los dos son éxito: para el flujo es idempotente, que es lo que
-  // se quiere de un webhook.
   if (!res.ok) {
     return { creado: false, motivo: `PerfectFlow respondió ${res.status}`, respuesta: ficha };
+  }
+
+  // 201 es alta. 200 es que la deduplicación encontró a alguien y devolvió ESA
+  // ficha en vez de crear la nuestra — y ahí hay que mirar a quién devolvió.
+  //
+  // `Deduplicable::IDENTITY_SOURCES` compara correo, teléfono e Instagram, y le
+  // basta que coincida UNO. Dos personas que comparten teléfono —una pareja, una
+  // oficina, un número de relleno mal tecleado— son la misma para esa regla. En
+  // modo merge no falla: devuelve 200 con la persona equivocada, y el flujo
+  // sigue como si nada.
+  //
+  // El síntoma es silencioso y caro: el lead nuevo nunca entra, su
+  // consentimiento no queda registrado, y si el correo se personaliza con lo que
+  // devuelve esta llamada, una persona recibe el nombre y los datos de otra.
+  //
+  // Por eso: si vuelve una ficha con OTRO correo que el que mandamos, no es
+  // nuestra persona. Se para.
+  const correoDevuelto = texto(ficha.email).toLowerCase();
+  const esOtraPersona = res.status === 200
+    && email && correoDevuelto && correoDevuelto !== email.toLowerCase();
+
+  if (esOtraPersona) {
+    return {
+      creado: false,
+      motivo: 'la deduplicación devolvió otro contacto: coincide el teléfono o el usuario de '
+        + 'Instagram pero el correo es distinto. El lead NO se creó y no se debe enviar el correo.',
+      enviado: email,
+      devuelto: correoDevuelto,
+      idDevuelto: ficha.id,
+    };
   }
 
   return {
@@ -117,7 +144,10 @@ export const code = async (inputs) => {
     nuevo: res.status === 201,
     id: ficha.id,
     estado: ficha.state_code,
-    ficha,
+    // NO se devuelve la ficha completa a propósito. Lleva notas, historial de
+    // atribución y el volcado de `attributes`; el correo sólo necesita el nombre.
+    // Si un día hace falta más, que se añada campo a campo.
+    nombre: texto(ficha.full_name),
     // Lo que el siguiente step necesita para armar el correo.
     // `tokenBaja` todavía no lo emite PerfectFlow — es el ticket PF-10 — así que
     // hoy llega vacío y `enviar-bienvenida.js` para el flujo a propósito.
