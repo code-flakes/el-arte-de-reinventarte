@@ -123,6 +123,9 @@ window.MEDICION = {
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 html.snap{scroll-snap-type:y mandatory}
+/* La barra es fija: sin este margen, al saltar a un ancla el titulo de la
+   seccion queda por debajo de ella. */
+section[id],header[id]{scroll-margin-top:72px}
 body{
   margin:0;background:var(--tinta);color:var(--hueso);
   font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.75;
@@ -1159,6 +1162,41 @@ function actualizarSnap(){
 window.addEventListener('scroll', actualizarSnap, { passive: true });
 window.addEventListener('resize', actualizarSnap);
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) actualizarSnap();
+
+// ---- llegar con ancla en la URL ----
+// Con scroll-snap obligatorio, el salto al ancla de la carga no ocurre: el
+// navegador intenta ir y el snap lo devuelve arriba, asi que compartir
+// /#comunidad dejaba a la persona en la portada. Se quita el anclaje, se
+// coloca, y se devuelve el control a actualizarSnap.
+(function(){
+  var id = location.hash.slice(1);
+  if (!id) return;
+  var destino = document.getElementById(id);
+  if (!destino) return;
+  function colocar(){
+    // Hacen falta las tres cosas a la vez, y en este orden:
+    //   1. fuera el anclaje por seccion, que devuelve el scroll arriba;
+    //   2. fuera el desplazamiento suave, que convierte el salto en una
+    //      animacion que el anclaje aborta a media altura;
+    //   3. la posicion asignada a mano, no scrollIntoView, que con el snap
+    //      recien quitado hay navegadores que ignoran en la misma vuelta.
+    doc.classList.remove('snap');
+    var suave = doc.style.scrollBehavior;
+    doc.style.scrollBehavior = 'auto';
+    var y = destino.getBoundingClientRect().top + (window.scrollY || doc.scrollTop) - 72;
+    if (y < 0) y = 0;
+    doc.scrollTop = y;
+    window.scrollTo(0, y);
+    doc.style.scrollBehavior = suave;
+    // Despues de posicionar: si el destino esta pasado el limite, actualizarSnap
+    // lo deja desactivado solo; si no, lo vuelve a poner.
+    actualizarSnap();
+  }
+  // Dos pasadas: la primera coloca de inmediato, la segunda corrige cuando ya
+  // cargaron las imagenes de arriba y el documento cambio de alto.
+  colocar();
+  window.addEventListener('load', function(){ setTimeout(colocar, 60); });
+})();
 
 var nav = document.getElementById('nav');
 var barra = document.getElementById('barra');
