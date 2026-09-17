@@ -112,8 +112,12 @@ window.MEDICION = {
   --dorado:#C79A4E;
   --oro:#E5CB94;
   --alerta:#E8907A;
-  --verde:#55502F;     /* seccion "lo que vas a vivir" */
-  --ladrillo:#8D5031;  /* seccion "la diferencia" */
+  /* Cuatro tonos de la marca: dos familias y un paso mas hondo de cada una,
+     para alternar a lo largo de la pagina sin repetir el mismo bloque seguido. */
+  --verde:#55502F;
+  --verde-hondo:#3F3B22;
+  --ladrillo:#8D5031;
+  --ladrillo-hondo:#6B3A23;
   --display:'Fraunces',Georgia,'Times New Roman',serif;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Jost',-apple-system,sans-serif;
@@ -274,7 +278,7 @@ html.snap #identificacion{scroll-snap-align:start}
 @keyframes pulso{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
 
 /* ---------- el espejo ---------- */
-.calma{background:var(--noche);color:var(--hueso);padding:clamp(5rem,11vw,8rem) 0;
+.calma{color:var(--hueso);padding:clamp(5rem,11vw,8rem) 0;
   min-height:100svh;display:grid;place-items:center}
 /* Las frases van en tipografia grande, y el ancho general de texto (56ch
    medidos sobre el cuerpo pequeno) las parte en cuatro renglones cada una: el
@@ -293,36 +297,75 @@ html.snap #identificacion{scroll-snap-align:start}
 }
 
 /* ---------- secciones en color ----------
-   Rompen el oscuro sin salirse de la gama: los dos tonos son los de la marca.
-   Sobre ellos el dorado de los antetitulos pierde contraste —queda barro sobre
-   barro—, asi que en estas dos secciones los rotulos van en hueso. */
-.seccion.verde{background:var(--verde)}
-.seccion.ladrillo{background:var(--ladrillo)}
-.seccion.verde .kicker,
-.seccion.ladrillo .kicker{color:rgba(242,236,225,.85)}
-.seccion.verde .cabecera .sub,
-.seccion.ladrillo .cabecera .sub,
-.seccion.verde .pilares p,
-.seccion.ladrillo .diferencias p{color:rgba(242,236,225,.82)}
-/* Las tarjetas heredaban el fondo oscuro y se recortaban como agujeros sobre
-   el color: aqui van un punto por debajo del fondo de la seccion. */
-.seccion.verde .pilares{background:rgba(18,14,9,.22);border-color:rgba(242,236,225,.22)}
-.seccion.verde .pilares article{background:var(--verde)}
-.seccion.verde .pilares h3::before{background:var(--oro)}
-.seccion.ladrillo .diferencias li,
-.seccion.ladrillo .diferencias ul{border-color:rgba(242,236,225,.22)}
-/* "Esto nace de una historia real" tambien entra en la alternancia: el texto
-   corrido y la cita necesitan su propio contraste sobre el color. */
-.seccion.verde .texto p,
-.seccion.ladrillo .texto p{color:rgba(242,236,225,.85)}
-.seccion.verde .pregunta,
-.seccion.ladrillo .pregunta{color:var(--oro)}
-/* La foto llevaba un apagado pensado para el fondo oscuro. */
-.seccion.verde .egda img,
-.seccion.ladrillo .egda img{filter:none}
+   Ninguna seccion se queda en negro plano: cada una toma uno de los cuatro
+   tonos y los va alternando. El color propio se declara una vez en --fondo, y
+   de ahi lo leen las tarjetas y rejillas que antes iban en negro y se
+   recortaban como agujeros sobre el color.
+
+   El texto sigue siendo claro en las cuatro, asi que no hay que invertir nada:
+   solo ceder contraste donde el dorado se apaga contra el fondo. */
+.encolor.verde          {--fondo:var(--verde)}
+.encolor.verde-hondo    {--fondo:var(--verde-hondo)}
+.encolor.ladrillo       {--fondo:var(--ladrillo)}
+.encolor.ladrillo-hondo {--fondo:var(--ladrillo-hondo)}
+.encolor{background:var(--fondo)}
+
+/* El dorado de los antetitulos queda barro sobre barro: pasa a hueso. */
+.encolor .kicker{color:rgba(242,236,225,.85)}
+.encolor .cabecera .sub,
+.encolor .texto p,
+.encolor .pilares p,
+.encolor .diferencias p,
+.encolor .relato .sucesos,
+.encolor .frases .nota,
+.encolor .trio p{color:rgba(242,236,225,.82)}
+.encolor .pregunta{color:var(--oro)}
+/* Las fotos llevaban un apagado pensado para el negro. */
+.encolor .egda img{filter:none}
+.encolor .trio img{filter:grayscale(.12) brightness(.96)}
+
+/* Rejillas y tarjetas: la linea que las separa se aclara y el relleno toma el
+   color de su seccion, en vez del negro que traian. */
+.encolor .pilares,
+.encolor .rejilla,
+.encolor .filtro{background:rgba(18,14,9,.22);border-color:rgba(242,236,225,.22)}
+.encolor .pilares article,
+.encolor .rejilla > div,
+.encolor .filtro > div{background:var(--fondo)}
+.encolor .diferencias li,
+.encolor .diferencias ul,
+.encolor .filtro li,
+.encolor .preguntas details,
+.encolor .relato .preguntas-vitales,
+.encolor .campo input,
+.encolor .campo select{border-color:rgba(242,236,225,.3)}
+.encolor .campo select option{background:var(--fondo)}
+
+/* ---------- ondas ----------
+   El borde recto entre dos colores es un corte; la onda lo vuelve un paso.
+   Se dibuja del color de la seccion y se apoya sobre la vecina, por eso va
+   fuera de sus limites y sin recortar. */
+.ondas{position:relative}
+.ondas::before,
+.ondas::after{
+  content:'';position:absolute;left:0;right:0;height:42px;pointer-events:none;
+  background-repeat:repeat-x;background-size:1200px 42px;
+}
+.ondas::before{
+  top:-41px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 42' preserveAspectRatio='none'%3E%3Cpath d='M0,42 C180,4 420,4 600,23 C780,42 1020,42 1200,14 L1200,42 Z' fill='%238D5031'/%3E%3C/svg%3E");
+}
+.ondas::after{
+  bottom:-41px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 42' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C180,38 420,38 600,19 C780,0 1020,0 1200,28 L1200,0 Z' fill='%238D5031'/%3E%3C/svg%3E");
+}
+@media(max-width:620px){
+  .ondas::before,.ondas::after{height:26px;background-size:600px 26px}
+  .ondas::before{top:-25px}
+  .ondas::after{bottom:-25px}
+}
 
 /* ---------- identificacion ---------- */
-.identificacion{background:var(--noche)}
 .relato{max-width:44ch;margin-inline:auto;text-align:center}
 .relato p{font-family:var(--serif);font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1.6;color:rgba(242,236,225,.9)}
 .relato .sucesos{color:var(--humo);font-size:clamp(1.05rem,2.1vw,1.3rem)}
@@ -664,7 +707,7 @@ html.cookies-abierto .barra{display:none}
 </header>
 
 <!-- ===== EL ESPEJO ===== -->
-<section class="calma">
+<section class="calma encolor verde-hondo">
   <div class="wrap centro estrecho frases">
     <p class="rv">Has construido una vida que &#8220;funciona&#8221;. Cumples, resuelves, avanzas.</p>
     <p class="rv d1">pero hace tiempo que ya no te representa.</p>
@@ -708,7 +751,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== IDENTIFICACIÓN ===== -->
-<section class="seccion identificacion" id="identificacion">
+<section class="seccion identificacion encolor ladrillo" id="identificacion">
   <div class="wrap">
     <div class="relato">
       <p class="rv">Quizás llevas tiempo sintiendo que algo dentro de ti está cambiando.</p>
@@ -727,7 +770,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== LO QUE VAS A VIVIR ===== -->
-<section class="seccion verde" id="vivir">
+<section class="seccion encolor verde" id="vivir">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Lo que vas a vivir</p>
@@ -764,7 +807,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== POR QUÉ TOSCANA ===== -->
-<section class="seccion alt" id="villa" style="padding-bottom:clamp(3.5rem,8vw,6rem)">
+<section class="seccion encolor ladrillo-hondo" id="villa" style="padding-bottom:clamp(3.5rem,8vw,6rem)">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">El refugio</p>
@@ -784,7 +827,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== LO QUE HACE DIFERENTE ===== -->
-<section class="seccion ladrillo">
+<section class="seccion encolor verde">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">La diferencia</p>
@@ -819,7 +862,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== LO PRÁCTICO ===== -->
-<section class="seccion alt" id="incluye" style="padding-top:0">
+<section class="seccion encolor ladrillo-hondo" id="incluye" style="padding-top:0">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Lo práctico</p>
@@ -860,7 +903,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== PARA QUIÉN ===== -->
-<section class="seccion">
+<section class="seccion encolor verde-hondo">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Antes de escribirnos</p>
@@ -893,7 +936,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== ANFITRIONAS ===== -->
-<section class="seccion alt">
+<section class="seccion encolor ladrillo-hondo">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Quiénes te acompañan</p>
@@ -927,7 +970,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== SOBRE EGDA ===== -->
-<section class="seccion verde">
+<section class="seccion encolor ladrillo ondas">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Sobre Egda</p>
@@ -978,7 +1021,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== PREGUNTAS ===== -->
-<section class="seccion alt">
+<section class="seccion encolor verde">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Dudas frecuentes</p>
@@ -1024,7 +1067,7 @@ html.cookies-abierto .barra{display:none}
 <!-- ===== APLICACIÓN ===== -->
 <!-- El envio va por fetch en JSON al webhook de Activepieces (data-endpoint).
      El atributo action queda como respaldo semantico; el JS siempre lo intercepta. -->
-<section class="seccion" id="comunidad">
+<section class="seccion encolor ladrillo-hondo" id="comunidad">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Comunidad de interés</p>
