@@ -308,6 +308,15 @@ html.snap #identificacion{scroll-snap-align:start}
 .seccion.verde .pilares h3::before{background:var(--oro)}
 .seccion.ladrillo .diferencias li,
 .seccion.ladrillo .diferencias ul{border-color:rgba(242,236,225,.22)}
+/* "Esto nace de una historia real" tambien entra en la alternancia: el texto
+   corrido y la cita necesitan su propio contraste sobre el color. */
+.seccion.verde .texto p,
+.seccion.ladrillo .texto p{color:rgba(242,236,225,.85)}
+.seccion.verde .pregunta,
+.seccion.ladrillo .pregunta{color:var(--oro)}
+/* La foto llevaba un apagado pensado para el fondo oscuro. */
+.seccion.verde .egda img,
+.seccion.ladrillo .egda img{filter:none}
 
 /* ---------- identificacion ---------- */
 .identificacion{background:var(--noche)}
@@ -915,7 +924,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== SOBRE EGDA ===== -->
-<section class="seccion">
+<section class="seccion verde">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Sobre Egda</p>
