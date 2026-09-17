@@ -346,13 +346,13 @@ html.snap #identificacion{scroll-snap-align:start}
 
 /* ---------- datos prácticos ---------- */
 .rejilla{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);margin-top:0}
+/* Cuatro datos: en dos columnas caben exactos, y en ancho van en una fila.
+   Con las cinco de antes quedaba una celda vacia al final. */
 @media(min-width:560px){
   .rejilla{grid-template-columns:repeat(2,1fr)}
-  .rejilla > div:last-child{grid-column:1/-1}
 }
 @media(min-width:1000px){
-  .rejilla{grid-template-columns:repeat(5,1fr)}
-  .rejilla > div:last-child{grid-column:auto}
+  .rejilla{grid-template-columns:repeat(4,1fr)}
 }
 .rejilla > div{background:var(--noche);padding:2rem 1.4rem;text-align:center}
 .rejilla dt{font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--humo);margin-bottom:.6rem}
@@ -790,7 +790,6 @@ html.cookies-abierto .barra{display:none}
       <div><dt>Duración</dt><dd>3 días · 2 noches</dd></div>
       <div><dt>Lugar</dt><dd>Arezzo, Toscana</dd></div>
       <div><dt>Grupo</dt><dd>10 mujeres</dd></div>
-      <div><dt>Aplicaciones</dt><dd>Hasta el 18 Sep 2026</dd></div>
     </dl>
     <div class="incluye">
       <div class="rv">
@@ -934,7 +933,7 @@ html.cookies-abierto .barra{display:none}
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.8v3.4M16 2.8v3.4M8 14h3M8 17h6"/></svg>Financiamiento</li>
     </ul>
     <a class="enlace oro rv d2" href="https://wa.link/n8rndv" target="_blank" rel="noopener">Quiero vivirlo</a>
-    <p class="plazas rv d3">Solo 10 lugares · Aplicaciones hasta el 18 de septiembre de 2026</p>
+    <p class="plazas rv d3">Solo 10 lugares</p>
   </div>
 </section>
 
