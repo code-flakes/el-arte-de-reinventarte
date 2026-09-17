@@ -352,17 +352,17 @@ html.snap #identificacion{scroll-snap-align:start}
    justo lo que queremos donde dos bloques se leen como uno solo. */
 .encolor{position:relative}
 .encolor::before,
-.onda-abajo::after{
+.onda-pie{
   content:'';position:absolute;left:0;right:0;height:44px;z-index:2;pointer-events:none;
   background-color:var(--fondo);
-  -webkit-mask-repeat:repeat-x;mask-repeat:repeat-x;
-  -webkit-mask-size:1200px 44px;mask-size:1200px 44px;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
 }
 .encolor::before{
   top:-43px;
   -webkit-mask-image:var(--onda-arriba);mask-image:var(--onda-arriba);
 }
-.onda-abajo::after{
+.onda-pie{
   bottom:-43px;
   -webkit-mask-image:var(--onda-abajo);mask-image:var(--onda-abajo);
 }
@@ -373,9 +373,42 @@ html.snap #identificacion{scroll-snap-align:start}
 @media(max-width:620px){
   /* En movil la curva se achata: a 44px de alto sobre 390 de ancho el gesto se
      vuelve una ola de dibujos animados. */
-  .encolor::before,.onda-abajo::after{height:24px;-webkit-mask-size:620px 24px;mask-size:620px 24px}
+  .encolor::before,.onda-pie{height:24px}
   .encolor::before{top:-23px}
-  .onda-abajo::after{bottom:-23px}
+  .onda-pie{bottom:-23px}
+}
+
+/* ---------- fundido contra las fotos ----------
+   La onda funciona entre dos colores planos. Contra una foto a pantalla
+   completa recorta la imagen con un filo y parece un fallo de montaje, asi
+   que ahi el paso se hace con un degradado: el color nace de la foto. */
+.fundido::before{
+  -webkit-mask-image:none;mask-image:none;
+  background-color:transparent;
+  background-image:linear-gradient(to bottom,rgba(0,0,0,0),var(--fondo));
+  height:110px;top:-109px;
+}
+@media(max-width:620px){
+  .fundido::before{height:70px;top:-69px}
+}
+/* Y sin sello: la rama sobre la fotografia se lee como suciedad en la lente. */
+.fundido::after{content:none}
+
+/* ---------- rama sobre la onda ----------
+   La rama va dibujada sobre la misma curva que la onda y estirada igual que
+   ella, asi que cae exactamente sobre el borde en cualquier ancho de pantalla
+   en vez de flotar encima. Las hojas nacen a un lado y otro siguiendo la
+   tangente, para que parezca crecida sobre la curva y no posada.
+
+   Va en el dorado de la marca y a media opacidad: es una firma, no un adorno.
+   Si se nota antes que el titular, sobra. */
+.encolor::after{
+  content:'';position:absolute;z-index:3;pointer-events:none;
+  left:0;right:0;top:-43px;height:44px;opacity:.55;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201200%2044%22%20preserveAspectRatio=%22none%22%3E%3Cg%20fill=%22none%22%20stroke=%22%23C79A4E%22%20stroke-width=%221.2%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20vector-effect=%22non-scaling-stroke%22%3E%3Cpath%20d=%22M0%2044%20C170%206%20430%206%20600%2024%20C770%2042%201030%2042%201200%2012%22/%3E%3Cpath%20d=%22M0%200%20C4.0%20-7.0%2014.0%20-9.0%2019.0%20-5.0%20C13.0%201.0%204.0%204.0%200%200Z%22%20transform=%22translate%2820.8%2039.6%29%20rotate%28-11.2%29%22/%3E%3Cpath%20d=%22M0%200%20C3.1%205.5%2010.9%207.0%2014.8%203.9%20C10.1%20-0.8%203.1%20-3.1%200%200Z%22%20transform=%22translate%2842.4%2035.6%29%20rotate%28-9.9%29%22/%3E%3Cpath%20d=%22M0%200%20C4.5%20-7.8%2015.7%20-10.1%2021.3%20-5.6%20C14.6%201.1%204.5%204.5%200%200Z%22%20transform=%22translate%2887.8%2028.6%29%20rotate%28-7.7%29%22/%3E%3Cpath%20d=%22M0%200%20C3.5%206.2%2012.3%207.9%2016.7%204.4%20C11.4%20-0.9%203.5%20-3.5%200%200Z%22%20transform=%22translate%28135.5%2022.9%29%20rotate%28-5.9%29%22/%3E%3Cpath%20d=%22M0%200%20C3.8%20-6.6%2013.3%20-8.5%2018.1%20-4.8%20C12.3%200.9%203.8%203.8%200%200Z%22%20transform=%22translate%28184.9%2018.5%29%20rotate%28-4.3%29%22/%3E%3Cpath%20d=%22M0%200%20C4.2%207.4%2014.7%209.5%2019.9%205.2%20C13.7%20-1.1%204.2%20-4.2%200%200Z%22%20transform=%22translate%28235.7%2015.4%29%20rotate%28-2.9%29%22/%3E%3Cpath%20d=%22M0%200%20C2.9%20-5.0%2010.1%20-6.5%2013.7%20-3.6%20C9.4%200.7%202.9%202.9%200%200Z%22%20transform=%22translate%28287.1%2013.3%29%20rotate%28-1.6%29%22/%3E%3Cpath%20d=%22M0%200%20C4.0%207.0%2014.0%209.0%2019.0%205.0%20C13.0%20-1.0%204.0%20-4.0%200%200Z%22%20transform=%22translate%28338.7%2012.4%29%20rotate%28-0.5%29%22/%3E%3Cpath%20d=%22M0%200%20C4.6%20-8.0%2016.1%20-10.3%2021.8%20-5.8%20C14.9%201.1%204.6%204.6%200%200Z%22%20transform=%22translate%28389.8%2012.5%29%20rotate%280.7%29%22/%3E%3Cpath%20d=%22M0%200%20C3.4%206.0%2011.9%207.6%2016.1%204.2%20C11.0%20-0.8%203.4%20-3.4%200%200Z%22%20transform=%22translate%28440.0%2013.6%29%20rotate%281.8%29%22/%3E%3Cpath%20d=%22M0%200%20C4.0%20-7.0%2014.0%20-9.0%2019.0%20-5.0%20C13.0%201.0%204.0%204.0%200%200Z%22%20transform=%22translate%28488.6%2015.5%29%20rotate%282.9%29%22/%3E%3Cpath%20d=%22M0%200%20C3.1%205.5%2010.9%207.0%2014.8%203.9%20C10.1%20-0.8%203.1%20-3.1%200%200Z%22%20transform=%22translate%28535.2%2018.3%29%20rotate%284.1%29%22/%3E%3Cpath%20d=%22M0%200%20C4.5%20-7.8%2015.7%20-10.1%2021.3%20-5.6%20C14.6%201.1%204.5%204.5%200%200Z%22%20transform=%22translate%28579.2%2021.9%29%20rotate%285.3%29%22/%3E%3Cpath%20d=%22M0%200%20C3.5%206.2%2012.3%207.9%2016.7%204.4%20C11.4%20-0.9%203.5%20-3.5%200%200Z%22%20transform=%22translate%28620.8%2026.1%29%20rotate%285.3%29%22/%3E%3Cpath%20d=%22M0%200%20C3.8%20-6.6%2013.3%20-8.5%2018.1%20-4.8%20C12.3%200.9%203.8%203.8%200%200Z%22%20transform=%22translate%28664.8%2029.7%29%20rotate%284.1%29%22/%3E%3Cpath%20d=%22M0%200%20C4.2%207.4%2014.7%209.5%2019.9%205.2%20C13.7%20-1.1%204.2%20-4.2%200%200Z%22%20transform=%22translate%28711.4%2032.5%29%20rotate%283.0%29%22/%3E%3Cpath%20d=%22M0%200%20C2.9%20-5.0%2010.1%20-6.5%2013.7%20-3.6%20C9.4%200.7%202.9%202.9%200%200Z%22%20transform=%22translate%28760.0%2034.6%29%20rotate%281.9%29%22/%3E%3Cpath%20d=%22M0%200%20C4.0%207.0%2014.0%209.0%2019.0%205.0%20C13.0%20-1.0%204.0%20-4.0%200%200Z%22%20transform=%22translate%28810.2%2035.9%29%20rotate%280.9%29%22/%3E%3Cpath%20d=%22M0%200%20C4.6%20-8.0%2016.1%20-10.3%2021.8%20-5.8%20C14.9%201.1%204.6%204.6%200%200Z%22%20transform=%22translate%28861.3%2036.3%29%20rotate%28-0.0%29%22/%3E%3Cpath%20d=%22M0%200%20C3.4%206.0%2011.9%207.6%2016.1%204.2%20C11.0%20-0.8%203.4%20-3.4%200%200Z%22%20transform=%22translate%28912.9%2035.8%29%20rotate%28-1.1%29%22/%3E%3Cpath%20d=%22M0%200%20C4.0%20-7.0%2014.0%20-9.0%2019.0%20-5.0%20C13.0%201.0%204.0%204.0%200%200Z%22%20transform=%22translate%28964.3%2034.4%29%20rotate%28-2.1%29%22/%3E%3Cpath%20d=%22M0%200%20C3.1%205.5%2010.9%207.0%2014.8%203.9%20C10.1%20-0.8%203.1%20-3.1%200%200Z%22%20transform=%22translate%281015.1%2032.0%29%20rotate%28-3.3%29%22/%3E%3Cpath%20d=%22M0%200%20C4.5%20-7.8%2015.7%20-10.1%2021.3%20-5.6%20C14.6%201.1%204.5%204.5%200%200Z%22%20transform=%22translate%281064.5%2028.6%29%20rotate%28-4.6%29%22/%3E%3Cpath%20d=%22M0%200%20C3.5%206.2%2012.3%207.9%2016.7%204.4%20C11.4%20-0.9%203.5%20-3.5%200%200Z%22%20transform=%22translate%281112.2%2024.1%29%20rotate%28-6.1%29%22/%3E%3Cpath%20d=%22M0%200%20C3.8%20-6.6%2013.3%20-8.5%2018.1%20-4.8%20C12.3%200.9%203.8%203.8%200%200Z%22%20transform=%22translate%281157.6%2018.6%29%20rotate%28-7.9%29%22/%3E%3Cpath%20d=%22M0%200%20C4.2%207.4%2014.7%209.5%2019.9%205.2%20C13.7%20-1.1%204.2%20-4.2%200%200Z%22%20transform=%22translate%281179.2%2015.5%29%20rotate%28-8.9%29%22/%3E%3Ccircle%20cx=%22111.4%22%20cy=%2225.6%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22261.3%22%20cy=%2214.2%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22415.1%22%20cy=%2212.9%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22546.5%22%20cy=%2219.2%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22664.8%22%20cy=%2229.7%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22810.2%22%20cy=%2235.9%22%20r=%222.1%22/%3E%3Ccircle%20cx=%22964.3%22%20cy=%2234.4%22%20r=%222.1%22/%3E%3Ccircle%20cx=%221112.2%22%20cy=%2224.1%22%20r=%222.1%22/%3E%3C/g%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+}
+@media(max-width:620px){
+  .encolor::after{top:-23px;height:24px;opacity:.5}
 }
 
 /* ---------- identificacion ---------- */
@@ -720,7 +753,7 @@ html.cookies-abierto .barra{display:none}
 </header>
 
 <!-- ===== EL ESPEJO ===== -->
-<section class="calma encolor verde-hondo onda-abajo">
+<section class="calma encolor verde-hondo fundido">
   <div class="wrap centro estrecho frases">
     <p class="rv">Has construido una vida que &#8220;funciona&#8221;. Cumples, resuelves, avanzas.</p>
     <p class="rv d1">pero hace tiempo que ya no te representa.</p>
@@ -764,7 +797,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== IDENTIFICACIÓN ===== -->
-<section class="seccion identificacion encolor ladrillo" id="identificacion">
+<section class="seccion identificacion encolor ladrillo fundido" id="identificacion">
   <div class="wrap">
     <div class="relato">
       <p class="rv">Quizás llevas tiempo sintiendo que algo dentro de ti está cambiando.</p>
@@ -983,7 +1016,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== SOBRE EGDA ===== -->
-<section class="seccion encolor ladrillo onda-abajo">
+<section class="seccion encolor ladrillo">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Sobre Egda</p>
@@ -1034,7 +1067,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== PREGUNTAS ===== -->
-<section class="seccion encolor verde">
+<section class="seccion encolor verde fundido">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Dudas frecuentes</p>
@@ -1080,7 +1113,7 @@ html.cookies-abierto .barra{display:none}
 <!-- ===== APLICACIÓN ===== -->
 <!-- El envio va por fetch en JSON al webhook de Activepieces (data-endpoint).
      El atributo action queda como respaldo semantico; el JS siempre lo intercepta. -->
-<section class="seccion encolor ladrillo-hondo onda-abajo" id="comunidad">
+<section class="seccion encolor ladrillo-hondo" id="comunidad">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Comunidad de interés</p>
