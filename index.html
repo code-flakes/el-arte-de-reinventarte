@@ -112,6 +112,8 @@ window.MEDICION = {
   --dorado:#C79A4E;
   --oro:#E5CB94;
   --alerta:#E8907A;
+  --verde:#55502F;     /* seccion "lo que vas a vivir" */
+  --ladrillo:#8D5031;  /* seccion "la diferencia" */
   --display:'Fraunces',Georgia,'Times New Roman',serif;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Jost',-apple-system,sans-serif;
@@ -280,6 +282,26 @@ html.snap #identificacion{scroll-snap-align:start}
   font-size:clamp(1.25rem,3.2vw,1.8rem);line-height:1.4;
   margin:2.2rem auto 0;max-width:30ch;
 }
+
+/* ---------- secciones en color ----------
+   Rompen el oscuro sin salirse de la gama: los dos tonos son los de la marca.
+   Sobre ellos el dorado de los antetitulos pierde contraste —queda barro sobre
+   barro—, asi que en estas dos secciones los rotulos van en hueso. */
+.seccion.verde{background:var(--verde)}
+.seccion.ladrillo{background:var(--ladrillo)}
+.seccion.verde .kicker,
+.seccion.ladrillo .kicker{color:rgba(242,236,225,.85)}
+.seccion.verde .cabecera .sub,
+.seccion.ladrillo .cabecera .sub,
+.seccion.verde .pilares p,
+.seccion.ladrillo .diferencias p{color:rgba(242,236,225,.82)}
+/* Las tarjetas heredaban el fondo oscuro y se recortaban como agujeros sobre
+   el color: aqui van un punto por debajo del fondo de la seccion. */
+.seccion.verde .pilares{background:rgba(18,14,9,.22);border-color:rgba(242,236,225,.22)}
+.seccion.verde .pilares article{background:var(--verde)}
+.seccion.verde .pilares h3::before{background:var(--oro)}
+.seccion.ladrillo .diferencias li,
+.seccion.ladrillo .diferencias ul{border-color:rgba(242,236,225,.22)}
 
 /* ---------- identificacion ---------- */
 .identificacion{background:var(--noche)}
@@ -687,7 +709,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== LO QUE VAS A VIVIR ===== -->
-<section class="seccion alt" id="vivir">
+<section class="seccion verde" id="vivir">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Lo que vas a vivir</p>
@@ -744,7 +766,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== LO QUE HACE DIFERENTE ===== -->
-<section class="seccion">
+<section class="seccion ladrillo">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">La diferencia</p>
