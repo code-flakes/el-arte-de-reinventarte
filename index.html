@@ -342,27 +342,40 @@ html.snap #identificacion{scroll-snap-align:start}
 .encolor .campo select option{background:var(--fondo)}
 
 /* ---------- ondas ----------
-   El borde recto entre dos colores es un corte; la onda lo vuelve un paso.
-   Se dibuja del color de la seccion y se apoya sobre la vecina, por eso va
-   fuera de sus limites y sin recortar. */
-.ondas{position:relative}
-.ondas::before,
-.ondas::after{
-  content:'';position:absolute;left:0;right:0;height:42px;pointer-events:none;
-  background-repeat:repeat-x;background-size:1200px 42px;
+   Cada seccion en color trae su propia onda arriba, dibujada con su tono y
+   apoyada sobre la vecina: asi toda union entre secciones es una curva y no un
+   corte recto.
+
+   El color no puede ir dentro del SVG —seria un archivo por tono—, asi que el
+   SVG se usa de mascara y el color lo pone background-color leyendo --fondo.
+   Entre dos secciones del mismo tono la onda existe pero no se ve, que es
+   justo lo que queremos donde dos bloques se leen como uno solo. */
+.encolor{position:relative}
+.encolor::before,
+.onda-abajo::after{
+  content:'';position:absolute;left:0;right:0;height:44px;z-index:2;pointer-events:none;
+  background-color:var(--fondo);
+  -webkit-mask-repeat:repeat-x;mask-repeat:repeat-x;
+  -webkit-mask-size:1200px 44px;mask-size:1200px 44px;
 }
-.ondas::before{
-  top:-41px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 42' preserveAspectRatio='none'%3E%3Cpath d='M0,42 C180,4 420,4 600,23 C780,42 1020,42 1200,14 L1200,42 Z' fill='%238D5031'/%3E%3C/svg%3E");
+.encolor::before{
+  top:-43px;
+  -webkit-mask-image:var(--onda-arriba);mask-image:var(--onda-arriba);
 }
-.ondas::after{
-  bottom:-41px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 42' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C180,38 420,38 600,19 C780,0 1020,0 1200,28 L1200,0 Z' fill='%238D5031'/%3E%3C/svg%3E");
+.onda-abajo::after{
+  bottom:-43px;
+  -webkit-mask-image:var(--onda-abajo);mask-image:var(--onda-abajo);
+}
+:root{
+  --onda-arriba:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 44' preserveAspectRatio='none'%3E%3Cpath d='M0,44 C170,6 430,6 600,24 C770,42 1030,42 1200,12 L1200,44 Z' fill='%23000'/%3E%3C/svg%3E");
+  --onda-abajo:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 44' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C170,38 430,38 600,20 C770,2 1030,2 1200,32 L1200,0 Z' fill='%23000'/%3E%3C/svg%3E");
 }
 @media(max-width:620px){
-  .ondas::before,.ondas::after{height:26px;background-size:600px 26px}
-  .ondas::before{top:-25px}
-  .ondas::after{bottom:-25px}
+  /* En movil la curva se achata: a 44px de alto sobre 390 de ancho el gesto se
+     vuelve una ola de dibujos animados. */
+  .encolor::before,.onda-abajo::after{height:24px;-webkit-mask-size:620px 24px;mask-size:620px 24px}
+  .encolor::before{top:-23px}
+  .onda-abajo::after{bottom:-23px}
 }
 
 /* ---------- identificacion ---------- */
@@ -707,7 +720,7 @@ html.cookies-abierto .barra{display:none}
 </header>
 
 <!-- ===== EL ESPEJO ===== -->
-<section class="calma encolor verde-hondo">
+<section class="calma encolor verde-hondo onda-abajo">
   <div class="wrap centro estrecho frases">
     <p class="rv">Has construido una vida que &#8220;funciona&#8221;. Cumples, resuelves, avanzas.</p>
     <p class="rv d1">pero hace tiempo que ya no te representa.</p>
@@ -970,7 +983,7 @@ html.cookies-abierto .barra{display:none}
 </section>
 
 <!-- ===== SOBRE EGDA ===== -->
-<section class="seccion encolor ladrillo ondas">
+<section class="seccion encolor ladrillo onda-abajo">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Sobre Egda</p>
@@ -1067,7 +1080,7 @@ html.cookies-abierto .barra{display:none}
 <!-- ===== APLICACIÓN ===== -->
 <!-- El envio va por fetch en JSON al webhook de Activepieces (data-endpoint).
      El atributo action queda como respaldo semantico; el JS siempre lo intercepta. -->
-<section class="seccion encolor ladrillo-hondo" id="comunidad">
+<section class="seccion encolor ladrillo-hondo onda-abajo" id="comunidad">
   <div class="wrap">
     <div class="cabecera">
       <p class="kicker rv">Comunidad de interés</p>
