@@ -33,6 +33,8 @@ const CONTACTO = 'info@elartereinventarte.com';
 // La baja vive en la instancia del cliente, no en la landing: es ahí donde está
 // la ficha que hay que marcar.
 const INSTANCIA = 'https://el-arte-de-reinventarte.perfectflow.cloud';
+// El idioma en el que lee esta comunidad. La página de baja se sirve por locale.
+const IDIOMA = 'es';
 
 // El token es por contacto y opaco. No vale el id ni el correo: con el correo
 // en la URL, cualquiera da de baja a cualquiera probando direcciones, y con el
@@ -40,7 +42,9 @@ const INSTANCIA = 'https://el-arte-de-reinventarte.perfectflow.cloud';
 const urlDeBaja = ({ urlBaja, tokenBaja }) => {
   if (urlBaja) return String(urlBaja);            // ya viene armada: manda
   if (!tokenBaja) return '';
-  return `${INSTANCIA}/baja/${encodeURIComponent(String(tokenBaja))}`;
+  // El `/es` no es decorativo: la ruta vive dentro de `scope '/:locale'`
+  // (`config/routes.rb:86`), así que sin prefijo de idioma da 404.
+  return `${INSTANCIA}/${IDIOMA}/baja/${encodeURIComponent(String(tokenBaja))}`;
 };
 
 // Los párrafos, en un solo sitio: la versión en texto plano se arma con los
